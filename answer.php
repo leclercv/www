@@ -28,15 +28,14 @@ mysql_query("SET NAMES UTF8");
 			            $mail=$_POST['mail'];
 			            $token=$_POST['key'];
 			            $_SESSION['token'] = $token;
+			            $_SESSION['mail'] = $mail;
 			            $req = mysql_query("SELECT Token FROM Form WHERE Token = '" . $token . "'") or exit(mysql_error());
 						if (mysql_num_rows($req) == 1)// Vérification du Token
 						{
-						    echo 'Ok';
 							$req = mysql_query("SELECT Mail FROM Form WHERE Token = '".$token."'") or exit(mysql_error());
 							list($mailconf)=mysql_fetch_row($req); 
 							if(strstr($mailconf,$mail)) //Vérification du mail
 							{
-								echo "mailmatch";
 								echo "<script type='text/javascript'>document.location.replace('answer2.php');</script>";
 							}
 						}			            
