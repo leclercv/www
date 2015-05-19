@@ -29,7 +29,7 @@ mysql_query("SET NAMES UTF8");
 		echo "<form method='post'>";
 		for($i = 0; $i < count($tabquest); $i++)
 		{
-			if($tabquest[$i]{0} == 0)
+			if($tabquest[$i]{0} == 1)
 			{
 				echo "<h1>".substr($tabquest[$i], 1)."</h1>";
 				$tabanswcourant = explode(" _ ", $tabansw[$i]);
@@ -38,7 +38,7 @@ mysql_query("SET NAMES UTF8");
 						echo '<input type="checkbox" name="answ'.$i.'" value="'.$tabanswcourant[$a].'">'.$tabanswcourant[$a].'<br>';
 					}
 			}
-			if($tabquest[$i]{0} == 1)
+			if($tabquest[$i]{0} == 0)
 			{
 				echo "<h1>".substr($tabquest[$i], 1)."</h1>";
 				$tabanswcourant = explode(" _ ", $tabansw[$i]);
