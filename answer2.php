@@ -74,7 +74,7 @@ mysql_query("SET NAMES UTF8");
 							}
 						}
 						$multrep = substr($multrep, 0, -2);
-						$hasansw = $hasansw.$multrep."<br>";
+						$hasansw = $hasansw.$multrep."\n";
 					}
 					if($tabquest[$z]{0} == 0)
 					{
@@ -86,11 +86,15 @@ mysql_query("SET NAMES UTF8");
 								$multrep = $multrep.$_POST['ransw'.$x]." ";
 							}
 						}
-						$hasansw = $hasansw.$multrep."<br>";
+						$hasansw = $hasansw.$multrep."\n";
 					}
 				}
-				$hasansw = "The user ".$_SESSION['mail']." "."has answered your test ! Here are his answers : <br>".$hasansw;
-				echo $hasansw;
+				$listmail = "";
+				$hasansw = "The user ".$_SESSION['mail']." "."has answered your test ! Here are his answers : \n".$hasansw;
+				$req = mysql_query("SELECT Mail FROM Form WHERE Token = '".$token."'") or exit(mysql_error());
+				list($listmail)=mysql_fetch_row($req); 
+				$tabmail = explode(" | ", $listmail);
+				mail($tabmail[0], 'Someone has answered your test !', $hasansw);
 			}
 ?>
 	</body>
