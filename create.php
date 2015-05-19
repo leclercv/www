@@ -30,9 +30,11 @@ mysql_query("SET NAMES UTF8");
 				var lasterrortitle = null;
 				var cpterrortitle = 0;
 
-
 				var messagerrorprop = "";
 				var questionerrorprop = "";
+
+				var messagerrormail = "";
+				var nberrormail = "";
 
 				var cpterror = 0;
 
@@ -289,7 +291,7 @@ mysql_query("SET NAMES UTF8");
 			i++;
 			itotal = i;
 		    questions.push(
-		    "<h2>Question " + i + "</h2><input type ='text' name ='question" + i + "' id='question" + i +"' value='' size=80/><br/><br/><input type='button' id='nouveauProposition"+i+"' onclick='nouveauProposition("+i+")' value='Add an answer'style='height:80px; width:200px'/><select id='typequestion"+i+"'><option value='0'>One correct answer</option><option value='1'>Multiple correct answers</option><option selected='selected' style='display:none' value='choose'>Choose the type of question "+i+"</option></select><br/><br/>");
+		    "<h2>Question " + i + "</h2><input type ='text' name ='question" + i + "' id='question" + i +"' value='' size=80 maxlength=80/><br/><br/><input type='button' id='nouveauProposition"+i+"' onclick='nouveauProposition("+i+")' value='Add an answer'style='height:80px; width:200px'/><select id='typequestion"+i+"'><option value='0'>One correct answer</option><option value='1'>Multiple correct answers</option><option selected='selected' style='display:none' value='choose'>Choose the type of question "+i+"</option></select><br/><br/>");
 
 		    var contenu = "";
 
@@ -366,7 +368,7 @@ mysql_query("SET NAMES UTF8");
 		function nouveauProposition (i){
 			ip++;
 			var numproposition = questions[i-1].toString().split("Proposition").length-2;
-		    questions[i-1] = questions[i-1] + "Proposition   "+numproposition+"<input type='text' name='proposition"+ip+"' id='question"+i+"proposition"+numproposition+"'value=''size=50/><br/>";
+		    questions[i-1] = questions[i-1] + "Proposition   "+numproposition+"<input type='text' name='proposition"+ip+"' id='question"+i+"proposition"+numproposition+"'value=''size=50 maxlength=50/><br/>";
 
 			//Sauvegarder les valeurs des inputs : 
 
@@ -435,7 +437,7 @@ mysql_query("SET NAMES UTF8");
 			$("#nouveauMail").click(function(){   
 				nbmail ++;
 
-				mails.push(nbmail + "<input type='text' name='studentmail"+nbmail+"' id='studentmail"+nbmail+"' value='' size=30/><br/>");
+				mails.push(nbmail + "<input type='text' name='studentmail"+nbmail+"' id='studentmail"+nbmail+"' value='' size=30 maxlength=50/><br/>");
 
 				var contenumail = "";
 
@@ -443,7 +445,7 @@ mysql_query("SET NAMES UTF8");
 			   		contenumail = contenumail + mails[cpt];
 				}
 
-				contenumailfinal = "<input type='text' name='teachermail' id='teachermail' placeholder='Enter your mail address here' value='' style='background-color: #00FF66;' size=30/><br/></br>" + contenumail;
+				contenumailfinal = "<input type='text' name='teachermail' id='teachermail' placeholder='Enter your mail address here' value='' style='background-color: #00FF66;' size=30 maxlength=50/><br/></br>" + contenumail;
 				
 				//Sauvegarder les valeurs des inputs : 
 
@@ -475,7 +477,7 @@ mysql_query("SET NAMES UTF8");
 
 </HEAD>
 <BODY>
-
+	<h1> Create your e-test </h1>
 	<h1> Questions : </h1>
 	<div id='questions'></div><br/><br/>
 	<input type='button' id='nouveauInput' style='height:80px; width:200px' value='Add a question'/><br/> <br/>
