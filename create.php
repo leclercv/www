@@ -79,18 +79,16 @@ mysql_query("SET NAMES UTF8");
 				
 				var compteurprop = 0;
 
-				for(var cptprop =1;cptprop<=i;cptprop++){
-					nbprop = questions[compteurprop].toString().split("Proposition").length-2;
-					for(var scpt =1;scpt<=nbprop;scpt++){
-						if($("#question"+cptprop+"proposition"+scpt).val() == ''){
-							messagerrorprop = " \n You left an empty field at the proposition " + scpt + " of the question " +cptprop ;
-							messagerrorfinalprop = messagerrorfinalprop + messagerrorprop;
-							cpterror++;
-							cpterrorprop++;
+					for(var cptprop =1;cptprop<=i;cptprop++){
+						nbprop = questions[compteurprop].toString().split("Proposition").length-2;
+						for(var scpt =1;scpt<=nbprop;scpt++){
+							if($("#question"+cptprop+"proposition"+scpt).val() == ''){
+								messagerrorprop = " \n You left an empty field at the proposition " + scpt + " of the question " + cptprop ;
+								cpterror++;
+							}
 						}
+						compteurprop ++;
 					}
-					compteurprop ++;
-				}
 
 				//prof
 				 	var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
@@ -246,7 +244,6 @@ mysql_query("SET NAMES UTF8");
 
 				//Les mails
 
-
 					//prof
 				 	var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
 			        var emailaddressVal = $("#teachermail").val();
@@ -280,7 +277,6 @@ mysql_query("SET NAMES UTF8");
 					var reponse = resultatfinal + " ~ " + resultatrepfinal + " ~ " + listemail;
 					alert("Questions : " +resultatfinal  + " \n \n Réponses : " + resultatrepfinal + " \n \n Mails : " + listemail);
 					document.getElementById('final').innerHTML = "<form method='post'><input name='validation' type='submit' value='"+reponse+"'/></form>";
-
 				}
 				else{
 					alert(messagerrorfinal);
@@ -354,34 +350,30 @@ mysql_query("SET NAMES UTF8");
 					$("#question"+cptprop+"proposition"+scpt).val(contenuproposition[indextab]);
 					indextab++;
 				}
-				
+			}
+
 			//Les types des questions
 			if(i>1){
 				for(var cptbis = 1;cptbis<itotal;cptbis++){
 			   		$("#typequestion"+cptbis).val(questiontype[cptbis]);
 				}
 			}
-				
 			compteur ++;
-		}
-
-			
-
 		    ip = 0;
 		});
 	});
 
 		function nouveauProposition (i){
-				ip++;
-				var numproposition = questions[i-1].toString().split("Proposition").length-2;
-			    questions[i-1] = questions[i-1] + "Proposition   "+ numproposition + " <input type='text' name='proposition"+ ip  +"' id='question"+i+"proposition" + numproposition + "' value='' size=50/><br/>";
+			ip++;
+			var numproposition = questions[i-1].toString().split("Proposition").length-2;
+		    questions[i-1] = questions[i-1] + "Proposition   "+numproposition+"<input type='text' name='proposition"+ip+"' id='question"+i+"proposition"+numproposition+"'value=''size=50/><br/>";
 
 			//Sauvegarder les valeurs des inputs : 
 
 			//Les questions
 			var contenuquestion = new Array;
 
-			for(var cptbis = 1;cptbis<=i;cptbis++){
+			for(var cptbis = 1;cptbis<=itotal;cptbis++){
 		   		contenuquestion[cptbis] = $("#question"+cptbis).val();
 			}
 
@@ -455,15 +447,15 @@ mysql_query("SET NAMES UTF8");
 				
 				//Sauvegarder les valeurs des inputs : 
 
-					//Le mail de l'enseignant
-					var mailprof= $("#teachermail").val();
+				//Le mail de l'enseignant
+				var mailprof= $("#teachermail").val();
 
-					//Les mails des élèves
-					var arraymail = new Array;
+				//Les mails des élèves
+				var arraymail = new Array;
 
-					for(var cptbis = 1;cptbis<=nbmail;cptbis++){
-				   		arraymail[cptbis] = $("#studentmail"+cptbis).val();
-					}
+				for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+					arraymail[cptbis] = $("#studentmail"+cptbis).val();
+				}
 
 			    document.getElementById('mails').innerHTML = contenumailfinal;
 
@@ -485,28 +477,24 @@ mysql_query("SET NAMES UTF8");
 <BODY>
 
 	<h1> Questions : </h1>
-	<div id='questions'></div>
-	<br/><br/>
-	<input type='button' id='nouveauInput' style='height:80px; width:200px' value='Add a question'/>
-	<br/> <br/>
+	<div id='questions'></div><br/><br/>
+	<input type='button' id='nouveauInput' style='height:80px; width:200px' value='Add a question'/><br/> <br/>
 	<h1> Mails : </h1>
 	<div id='mails'>
 		<input type='text' name='teachermail' id='teachermail' placeholder='Enter your mail address here' value='' style='background-color: #00FF66;' size=30/><br/>
-	</div>
-	<br/><br/>
-	<input type='button' id='nouveauMail' style='height:80px; width:200px' value='Add a mail'/>
-	<br/> <br/>
+	</div><br/><br/>
+	<input type='button' id='nouveauMail' style='height:80px; width:200px' value='Add a mail'/><br/> <br/>
+
 	<h1> Validation : </h1>
 
-	Be sure to leave no empty fields ! You can check your test by clicking this button : <input type='button' value='Check your test' id='verify' style='height:80px; width:200px'/>
-	<br/>
-	<br/>
-	<br/>
+	Be sure to leave no empty fields ! <br/>
+	You can check your test by clicking this button : 
+	<input type='button' value='Check your test' id='verify' style='height:80px; width:200px'/><br/><br/><br/>
 	<input type='button' value='Done' id='valider' style='height:80px; width:200px'/>
 	<div id='final'></div>
 
 	<?php
-			if(isset($_POST['validation'])){
+		if(isset($_POST['validation'])){
 			$tabrep = explode(" ~ ", $_POST['validation']);
 			$question = $tabrep[0];
 			$reponse = $tabrep[1];
@@ -515,7 +503,7 @@ mysql_query("SET NAMES UTF8");
 			$token = md5($token);
 			$sql = 'INSERT INTO Form VALUES ("'.$token.'", "'.$reponse.'", " ", "'.$mail.'", "'.$question.'")';
 			mysql_query ($sql) or die ('Erreur SQL !'.$sql.'<br />'.mysql_error());
-			}
+		}
 	?>
 
 </BODY>
