@@ -451,7 +451,7 @@ mysql_query("SET NAMES UTF8");
 			   		contenumail = contenumail + mails[cpt];
 				}
 
-				contenumailfinal = "<input type='text' name='teachermail' id='teachermail' value='Enter your mail address here'  style='background-color: #00FF66;' size=30/><br/></br>" + contenumail;
+				contenumailfinal = "<input type='text' name='teachermail' id='teachermail' placeholder='Enter your mail address here' value='' style='background-color: #00FF66;' size=30/><br/></br>" + contenumail;
 				
 				//Sauvegarder les valeurs des inputs : 
 
@@ -491,7 +491,7 @@ mysql_query("SET NAMES UTF8");
 	<br/> <br/>
 	<h1> Mails : </h1>
 	<div id='mails'>
-		<input type='text' name='teachermail' id='teachermail' value='Enter your mail address here'  style='background-color: #00FF66;' size=30/><br/>
+		<input type='text' name='teachermail' id='teachermail' placeholder='Enter your mail address here' value='' style='background-color: #00FF66;' size=30/><br/>
 	</div>
 	<br/><br/>
 	<input type='button' id='nouveauMail' style='height:80px; width:200px' value='Add a mail'/>
