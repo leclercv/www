@@ -4,6 +4,7 @@ $base = mysql_connect ('localhost', 'root', 'root');
 mysql_select_db ('etest', $base) ;
 mysql_query("SET NAMES UTF8"); 
 ?>
+
 <HTML>
 <HEAD>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -73,7 +74,7 @@ mysql_query("SET NAMES UTF8");
 					questionerrortitle = questionerrortitle + "& " + lasterrortitle;
 					messagerrortitle = messagerrortitle + questionerrortitle;
 				}
-				else{
+				else if(cpterrortitle == 1){
 					messagerrortitle = "You left an empty field at question " + questionerrortitle; 
 				}
 
@@ -119,7 +120,7 @@ mysql_query("SET NAMES UTF8");
 
 				//Concatenation des messages d'erreurs
 
-				messagerrorfinal = cpterror + " errors have been detected : \n" + messagerrortype + "\n" + messagerrortitle + messagerrorprop + "\n" + messagerrormail;
+				messagerrorfinal = cpterror + " error(s) have been detected : \n" + messagerrortype + "\n" + messagerrortitle + messagerrorprop + "\n" + messagerrormail;
 
 				if(cpterror==0){
 					alert("There is no error in your test :)");
@@ -140,7 +141,6 @@ mysql_query("SET NAMES UTF8");
 			var listemail ="";
 
 			//On parcours les intitulés de questions
-
 			for(var cpt =1;cpt<=i;cpt++){
 				resultat = resultat + $("#typequestion"+cpt).val() + $("#question"+cpt).val() + " | ";
 			}
@@ -277,6 +277,7 @@ mysql_query("SET NAMES UTF8");
 
 				if(cpterror==0){
 					var reponse = resultatfinal + " ~ " + resultatrepfinal + " ~ " + listemail;
+					reponse = reponse.split("'").join(" ");
 					alert("Questions : " +resultatfinal  + " \n \n Réponses : " + resultatrepfinal + " \n \n Mails : " + listemail);
 					document.getElementById('final').innerHTML = "<form method='post'><input name='validation' type='submit' value='"+reponse+"'/></form>";
 				}
@@ -497,7 +498,8 @@ mysql_query("SET NAMES UTF8");
 
 	<?php
 		if(isset($_POST['validation'])){
-			$tabrep = explode(" ~ ", $_POST['validation']);
+			$reponsesafe = addslashes($_POST['validation']);
+			$tabrep = explode(" ~ ", $reponsesafe);
 			$question = $tabrep[0];
 			$reponse = $tabrep[1];
 			$mail = $tabrep[2];
