@@ -279,7 +279,8 @@ mysql_query("SET NAMES UTF8");
 					var reponse = resultatfinal + " ~ " + resultatrepfinal + " ~ " + listemail;
 					reponse = reponse.split("'").join(" ");
 					alert("Questions : " +resultatfinal  + " \n \n Réponses : " + resultatrepfinal + " \n \n Mails : " + listemail);
-					document.getElementById('final').innerHTML = "<form method='post'><input name='validation' type='submit' value='"+reponse+"'/></form>";
+					document.getElementById('final').innerHTML = "<form method='post' id='formulaire'><input type='hidden' name='validation' value='"+reponse+"'/></form>";
+					document.getElementById('formulaire').submit();
 				}
 				else{
 					alert(messagerrorfinal);
@@ -507,6 +508,8 @@ mysql_query("SET NAMES UTF8");
 			$token = md5($token);
 			$sql = 'INSERT INTO Form VALUES ("'.$token.'", "'.$reponse.'", " ", "'.$mail.'", "'.$question.'")';
 			mysql_query ($sql) or die ('Erreur SQL !'.$sql.'<br />'.mysql_error());
+
+			echo "<script type='text/javascript'>document.location.replace('create2.php');</script>";
 		}
 	?>
 
