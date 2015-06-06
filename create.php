@@ -139,10 +139,18 @@ mysql_query("SET NAMES UTF8");
 			var resultatfinal = "";
 			var resultatrepfinal = "";
 			var listemail ="";
+			var resultatrepsafe ="";
+			var resultatsafe ="";
 
 			//On parcours les intitulés de questions
 			for(var cpt =1;cpt<=i;cpt++){
-				resultat = resultat + $("#typequestion"+cpt).val() + $("#question"+cpt).val() + " | ";
+				resultatsafe = $("#typequestion"+cpt).val() + $("#question"+cpt).val();
+				resultatsafe = resultatsafe.split("~").join(" ");
+				resultatsafe = resultatsafe.split("_").join(" ");
+				resultatsafe = resultatsafe.split("|").join(" ");
+
+				resultat = resultat + resultatsafe + " | ";
+
 			}
 
 			var compteur = 0;
@@ -152,7 +160,12 @@ mysql_query("SET NAMES UTF8");
 			for(var cptprop =1;cptprop<=i;cptprop++){
 				nbprop = questions[compteur].toString().split("Proposition").length-3;
 				for(var scpt =1;scpt<=nbprop;scpt++){
-					resultatrep = resultatrep + $("#question"+cptprop+"proposition"+scpt).val() + " _ ";
+					resultatrepsafe = $("#question"+cptprop+"proposition"+scpt).val()
+					resultatrepsafe = resultatrepsafe.split("~").join(" ");
+					resultatrepsafe = resultatrepsafe.split("_").join(" ");
+					resultatrepsafe = resultatrepsafe.split("|").join(" ");
+
+					resultatrep = resultatrep +resultatrepsafe + " _ ";
 				}
 				resultatrep = resultatrep.substring(0, resultatrep.length-3);
 				resultatrep = resultatrep + " | ";
@@ -276,8 +289,12 @@ mysql_query("SET NAMES UTF8");
 				messagerrorfinal = cpterror + " errors have been detected : \n" + messagerrortype + "\n" + messagerrortitle + messagerrorprop + "\n" + messagerrormail;
 
 				if(cpterror==0){
+					resultatfinal = resultatfinal.split("~").join(" ");
+					resultatrepfinal =  resultatrepfinal.split("~").join(" ");
+
 					var reponse = resultatfinal + " ~ " + resultatrepfinal + " ~ " + listemail;
-					reponse = reponse.split("'").join(" ");
+					reponse = reponse.split("'").join("&#8217;");
+
 					alert("Questions : " +resultatfinal  + " \n \n Réponses : " + resultatrepfinal + " \n \n Mails : " + listemail);
 					document.getElementById('final').innerHTML = "<form method='post' id='formulaire'><input type='hidden' name='validation' value='"+reponse+"'/></form>";
 					document.getElementById('formulaire').submit();
