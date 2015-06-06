@@ -5,6 +5,7 @@
 		 <center> Vincent Leclercq - Henri Dubois 
 		 <br>
 		 <h1>e-Testing system</h1>
+		</center>
 	</head>
 	<body>
 		<br>	
@@ -14,6 +15,5 @@
 		<button type="button" onclick="self.location.href='answer.php'" class="btn btn-primary"onclick>Answer a test</button>
 		</center>
 		</div>
-	</center>
 	</body>
 </html>

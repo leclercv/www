@@ -97,5 +97,9 @@ mysql_query("SET NAMES UTF8");
 				mail($tabmail[0], 'Someone has answered your test !', $hasansw);
 			}
 ?>
-	</body>
+</br>
+<center>
+<button type="button" class="btn btn-danger btn-lg" onclick="self.location.href='index.php'"onclick>Back to menu <span class="glyphicon glyphicon-home"></span></button>
+</center>
+</body>
 </html>
