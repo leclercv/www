@@ -9,6 +9,12 @@ mysql_query("SET NAMES UTF8");
 <HEAD>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<script type="text/javascript" language="Javascript" src="jquery.js"></script>
+		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		 <center> Vincent Leclercq - Henri Dubois 
+		 <br>
+		 <h1>e-Testing system</h1>
+		</center>
+</HEAD>
 	<script type="text/javascript">
 
 	questions = new Array;
@@ -493,8 +499,6 @@ mysql_query("SET NAMES UTF8");
 		});  
 
 	</script>
-
-</HEAD>
 <BODY>
 	<h1> Create your e-test </h1>
 	<h1> Questions : </h1>
@@ -517,6 +521,9 @@ mysql_query("SET NAMES UTF8");
 	<?php
 		if(isset($_POST['validation'])){
 			$reponsesafe = addslashes($_POST['validation']);
+			$to = "";
+			$listmail = "";
+			$textmail = "";
 			$tabrep = explode(" ~ ", $reponsesafe);
 			$question = $tabrep[0];
 			$reponse = $tabrep[1];
@@ -525,10 +532,29 @@ mysql_query("SET NAMES UTF8");
 			$token = md5($token);
 			$sql = 'INSERT INTO Form VALUES ("'.$token.'", "'.$reponse.'", " ", "'.$mail.'", "'.$question.'")';
 			mysql_query ($sql) or die ('Erreur SQL !'.$sql.'<br />'.mysql_error());
-
+			$req = mysql_query("SELECT Mail FROM Form WHERE Token = '".$token."'") or exit(mysql_error());
+			list($listmail)=mysql_fetch_row($req); 
+			$tabmail = explode(" | ", $listmail);
+			for($i = 1; $i < count($tabmail); $i++)
+			{
+				if($i == count($tabmail)-1){
+					$to = $to.$tabmail[$i];
+				}
+				else{
+				$to = $to.$tabmail[$i].", ";
+				}
+			}
+			$textmail = "The user ".$tabmail[0]." has created a test ! \n You can access to this test on our website by using your token and your mail account \n Token : ".$token;
+			$textmailteacher = "You can access it by using your token \n Token : ".$token." \n The test has been sent to : ".$to;
+			mail($to, 'Someone has created a test !', $textmail);
+			mail($tabmail[0], 'Your test is created !', $textmailteacher);
+			$_SESSION['to'] = $to;
+			$_SESSION['tok'] = $token;
 			echo "<script type='text/javascript'>document.location.replace('create2.php');</script>";
 		}
 	?>
-
+</br><center>
+<button type="button" class="btn btn-danger btn-lg" onclick="self.location.href='index.php'"onclick>Back to menu <span class="glyphicon glyphicon-home"></span></button>
+</center>
 </BODY>
 </HTML>

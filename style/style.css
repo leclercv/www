@@ -1,0 +1,22 @@
+h1 {
+ color: white;
+ font-family: 'geometria_lightlight';
+ font-size: 50px;
+}
+
+body {
+background-color:grey;
+}
+
+@font-face {
+    font-family: 'geometria_lightlight';
+    src: url('Geometria-Light-webfont.eot');
+    src: url('Geometria-Light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('Geometria-Light-webfont.woff2') format('woff2'),
+         url('Geometria-Light-webfont.woff') format('woff'),
+         url('Geometria-Light-webfont.ttf') format('truetype'),
+         url('Geometria-Light-webfont.svg#geometria_lightlight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
