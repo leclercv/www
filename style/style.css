@@ -54,16 +54,22 @@ background-color:grey;
 }
 
 #create{
- text-align: center;
- font-family: 'geometria_lightlight';
+    text-align: center;
+    font-family: 'geometria_lightlight';
 }
 
 #answer{
- text-align: center;
+    text-align: center;
+    font-family: 'geometria_lightlight';
+}
+
+#answer2{
+    font-family: 'geometria_lightlight';
+    text-align: center;
 }
 
 #boutons{
- text-align: center;
+    text-align: center;
 }
 
 #check{
