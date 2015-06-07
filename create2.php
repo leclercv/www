@@ -10,7 +10,8 @@ session_start();
 <BODY>
 	<center>
 	 <div id="title">e-Testing System </div>
-		<div id="texte"><?php
+		<div id="texte">
+			<?php
 			if(isset($_SESSION['tok']) && isset($_SESSION['to']))
 			{
 				echo '<h3>Your test has been succesfully created ! <br/> You will receive a mail soon with these informations : </h3>';
@@ -22,7 +23,7 @@ session_start();
 			echo "<script type='text/javascript'>document.location.replace('create.php');</script>";
 			}
 		?></div>
-		<button type="button" class="btn btn-danger btn-lg" onclick="self.location.href='index.php'"onclick>Back to menu <span class="glyphicon glyphicon-home"></span></button>
+		<button type="button" class="btn btn-danger btn-lg" onclick="self.location.href='index.php'">Back to menu <span class="glyphicon glyphicon-home"></span></button>
 	</center>
 
 </BODY>
