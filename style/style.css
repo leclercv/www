@@ -5,11 +5,25 @@
  text-align: center;
 }
 
+#titleabout {
+ color: white;
+ font-family: 'geometria_lightlight';
+ font-size: 70px;
+ text-align: left;
+}
+
 #texte {
  color: white;
  font-family: 'geometria_lightlight';
  font-size: 18px;
  text-align: center;
+}
+
+#texteabout {
+ color: white;
+ font-family: 'geometria_lightlight';
+ font-size: 15px;
+ text-align: justify;
 }
 
 body {
@@ -56,6 +70,7 @@ background-color:grey;
 #create{
     text-align: center;
     font-family: 'geometria_lightlight';
+    color:black;
 }
 
 #answer{

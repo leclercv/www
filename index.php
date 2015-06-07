@@ -3,8 +3,8 @@
 	<head>
 	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link href="style/style.css" rel="stylesheet" media="all" type="text/css"> 
-		 <div id="logoalytus">   <img src="style/akolegija.png" alt="Logo Akolegija" style="width:310px;height:61px";>  </div>
-		 <div id="logolille">	<img src="style/lille1.png" alt="Logo Lille1" style="width:190px;height:92px;"> </div>	
+		 <div id="logoalytus">  <a href="http://alytauskolegija.lt/en/"> <img src="style/akolegija.png" alt="Logo Akolegija" style="width:310px;height:61px;"> </a> </div>
+		 <div id="logolille">	<a href="http://www.univ-lille1.fr/"> <img src="style/lille1.png" alt="Logo Lille1" style="width:190px;height:92px;"> </a> </div>	
 		 <div id="title">e-Testing system </div>
 	</head>
 	<body>
