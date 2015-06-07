@@ -52,9 +52,7 @@
 					}
 				}
 				echo '<br><br><input name ="valider2" class="btn btn-success btn-lg" type="submit" value="OK">';
-				echo "<button type='button' class='btn btn-danger btn-lg' onclick='self.location.href='index.php''>Back to menu <span class='glyphicon glyphicon-home'></span></button>";
-
-				echo "</form>";
+		
 				if(isset($_POST['valider2'])){
 					for($z = 0 ; $z < count($tabquest) ; $z++){
 						$hasansw = $hasansw.substr($tabquest[$z], 1)." : ";
@@ -93,7 +91,12 @@
 				echo "<script type='text/javascript'>document.location.replace('answer.php');</script>";
 			}
 		?>
+		<button type='button' class='btn btn-danger btn-lg' onclick="self.location.href='index.php'">Back to menu <span class='glyphicon glyphicon-home'></span></button>
 		</font>
+		<?php
+			echo "</form>";
+		?>
+
 </div>
 </body>
 </html>
