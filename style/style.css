@@ -1,11 +1,44 @@
-h1 {
+#title {
  color: white;
  font-family: 'geometria_lightlight';
- font-size: 50px;
+ font-size: 70px;
+ text-align: center;
+}
+
+#texte {
+ color: white;
+ font-family: 'geometria_lightlight';
+ font-size: 18px;
+ text-align: center;
 }
 
 body {
 background-color:grey;
+}
+
+#about {
+ font-family: "Times New Roman", Georgia, Serif;
+ font-size: 25px;
+ position: absolute;
+ bottom: 25px;
+ right: 20px;
+}
+
+#logoalytus{
+ position: absolute;
+ bottom: 30px;
+ left: 20px;
+}
+
+#logolille{
+ position: absolute;
+ bottom :10px;
+ left: 400px;
+}
+
+#bouton {
+ position: center;
+ top: 135px;
 }
 
 @font-face {
@@ -18,5 +51,25 @@ background-color:grey;
          url('Geometria-Light-webfont.svg#geometria_lightlight') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
+
+#create{
+ text-align: center;
+  color: white;
+   font-family: 'geometria_lightlight';
+}
+
+#answer{
+ text-align: center;
+}
+
+#boutons{
+ text-align: center;
+}
+
+#check{
+ position: absolute;
+ top :140px;
+ left: 40px;
+}
+

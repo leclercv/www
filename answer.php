@@ -8,15 +8,15 @@ mysql_query("SET NAMES UTF8");
 <html>
 	<head>
 		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-		<center> Vincent Leclercq - Henri Dubois 
-		 <br>
-		 <h1>e-Testing system</h1>
+		<link href="style/style.css" rel="stylesheet" media="all" type="text/css"> 
+		<center> 
 	</head>
 	<body>
-		<br>	
-		<p> <h2>Enter your mail address, your token and then click "OK"</h2> </p>
-		<br>
-		<div class="input-group">
+		 <div id="title">Answer an e-Test </div>
+		 <br>	
+		 <p> <h3>Enter your mail address, your token and then click 'OK'</h3> </p>
+		 <br>
+		 <div class="input-group">
 
 			<form name="validation" method="post">
 

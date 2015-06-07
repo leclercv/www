@@ -3,24 +3,21 @@
 	<head>
 	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link href="style/style.css" rel="stylesheet" media="all" type="text/css"> 
-
-		 <center> 
-		 <br>
-		 <h1>e-Testing system</h1>
-		</center>
+		 <div id="logoalytus">   <img src="style/akolegija.png" alt="Logo Akolegija" style="width:310px;height:61px";>  </div>
+		 <div id="logolille">	<img src="style/lille1.png" alt="Logo Lille1" style="width:190px;height:92px;"> </div>	
+		 <div id="title">e-Testing system </div>
 	</head>
 	<body>
 		<br>	
 		<center>
-		<div class="btn-group btn-group-lg" role="group" aria-label="...">
-		<button type="button" onclick="self.location.href='create.php'" class="btn btn-primary" onclick>Create a new test</button>
-		<button type="button" onclick="self.location.href='answer.php'" class="btn btn-primary"onclick>Answer a test</button>
+		<div id="bouton" class="btn-group btn-group-lg" role="group" aria-label="...">
+		<button type="button" onclick="self.location.href='create.php'" class="btn btn-primary" style="width:250px;height:120px;">Create a new test</button>
+		<button type="button" onclick="self.location.href='answer.php'" class="btn btn-primary" style="width:250px;height:120px;">Answer a test</button>
 		</center>
 		</div>
-		
-		<img src="/style/akolegija.png" alt="Logo Akolegija">				
-		<img src="/style/lille1.png" alt="Logo Lille1">
-		<img src="lille1.png" alt="Logo Lille1">
+		 <div id="about">
+		 <a href="about.html" style="color:white;">What about us?</a>
+		 </div>
 
 	</body>
 </html>
