@@ -17,6 +17,8 @@ mysql_query("SET NAMES UTF8");
 		<div id="create">
 			<font color="white">
 			<?php
+			if (isset($_SESSION['token']) && isset($_SESSION['mail']))
+			{
 				$token = $_SESSION['token'];
 				$multrep = "";
 				$question = "";
@@ -97,6 +99,11 @@ mysql_query("SET NAMES UTF8");
 						$tabmail = explode(" | ", $listmail);
 						mail($tabmail[0], 'Someone has answered your test !', $hasansw);
 					}
+				}
+				else
+				{
+				echo "<script type='text/javascript'>document.location.replace('answer.php');</script>";
+				}
 			?>
 		</font>
 		</div>
