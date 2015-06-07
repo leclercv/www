@@ -298,7 +298,7 @@ mysql_query("SET NAMES UTF8");
 					var reponse = resultatfinal + " ~ " + resultatrepfinal + " ~ " + listemail;
 					reponse = reponse.split("'").join("&#8217;");
 
-					alert("Questions : " +resultatfinal  + " \n \n Réponses : " + resultatrepfinal + " \n \n Mails : " + listemail);
+					//alert("Questions : " +resultatfinal  + " \n \n Réponses : " + resultatrepfinal + " \n \n Mails : " + listemail);
 					document.getElementById('final').innerHTML = "<form method='post' id='formulaire'><input type='hidden' name='validation' value='"+reponse+"'/></form>";
 					document.getElementById('formulaire').submit();
 				}
@@ -313,7 +313,7 @@ mysql_query("SET NAMES UTF8");
 			i++;
 			itotal = i;
 		    questions.push(
-		    "<h2>Question " + i + "</h2><input type ='text' name ='question" + i + "' id='question" + i +"' value='' size=50 maxlength=80/><br/><br/><input type='button' class='btn btn-primary' id='nouveauProposition"+i+"' onclick='nouveauProposition("+i+")' value='Add an answer'style='height:30px; width:160px; font-family:Arial;'/><select id='typequestion"+i+"'><option value='0'>One correct answer</option><option value='1'>Multiple correct answers</option><option selected='selected' style='display:none' value='choose'>Choose the type of question "+i+"</option></select><br/><br/>");
+		    "<h2><font color='white'>Question " + i + "</font></h2><input type ='text' name ='question" + i + "' id='question" + i +"' value='' size=50 maxlength=80/><br/><br/><input type='button' class='btn btn-primary' id='nouveauProposition"+i+"' onclick='nouveauProposition("+i+")' value='Add an answer' style='height:30px; width:160px; font-family:Arial;'/><select id='typequestion"+i+"'><option value='0'>One correct answer</option><option value='1'>Multiple correct answers</option><option selected='selected' style='display:none' value='choose'>Choose the type of question "+i+"</option></select><br/><br/>");
 
 		    var contenu = "";
 
@@ -390,7 +390,7 @@ mysql_query("SET NAMES UTF8");
 		function nouveauProposition (i){
 			ip++;
 			var numproposition = questions[i-1].toString().split("Proposition").length-2;
-		    questions[i-1] = questions[i-1] + "Proposition   "+numproposition+"   <input type='text' name='proposition"+ip+"' id='question"+i+"proposition"+numproposition+"'value=''size=40 maxlength=50/><br/>";
+		    questions[i-1] = questions[i-1] + "<font color='white'>Proposition   "+numproposition+"   </font><input type='text' name='proposition"+ip+"' id='question"+i+"proposition"+numproposition+"'value=''size=40 maxlength=50/><br/>";
 
 			//Sauvegarder les valeurs des inputs : 
 
@@ -459,7 +459,7 @@ mysql_query("SET NAMES UTF8");
 			$("#nouveauMail").click(function(){   
 				nbmail ++;
 
-				mails.push("Student" + nbmail + "<input type='text' name='studentmail"+nbmail+"' id='studentmail"+nbmail+"' placeholder='Enter a student mail address here' value='' size=30 maxlength=50/><br/>");
+				mails.push("<font color='white'>Student " + nbmail + "  </font><input type='text' name='studentmail"+nbmail+"' id='studentmail"+nbmail+"' placeholder='Enter a student mail address here' value='' size=30 maxlength=50/><br/>");
 
 				var contenumail = "";
 
@@ -497,16 +497,22 @@ mysql_query("SET NAMES UTF8");
 
 	</script>
 <BODY>
-	 <div id="create">
+	 
 		 <div id="title">Create your e-Test </div>
-		 <h1> Questions : </h1>
-		 <div id='questions'></div><br/><br/>
-		  </div> <div id='boutons'><button type='button' class="btn btn-info" id='nouveauInput' style='height:30px; width:160px'/>Add a question <span class="glyphicon glyphicon-plus"></span></button><br/> <br/>
-		 <h1> Mails : </h1>
-		 <div id='mails'> <input type='text' name='teachermail' id='teachermail' placeholder='Enter your mail address here' value='' size=30/><br/></div><br/><br/>
-		 </div> <div id='boutons'><button type='button' class="btn btn-primary" id='nouveauMail' style='height:30px; width:160px' />Add a student mail <span class="glyphicon glyphicon-envelope"></span></button></div><div id='create'><br/> <br/>
-		</div>
-		<div id='check'><button type='button' class="btn btn-warning" id='verify' style='height:45px; width:160px'/> Check your e-test <span class="glyphicon glyphicon-search"></span></button><br/>
+
+		 <div id="create"><h1><font color="white"> Questions : </font></h1>
+			 <div id='questions'></div><br/><br/>
+		 </div>
+
+		 <div id='boutons'><button type='button' class="btn btn-info" id='nouveauInput' style='height:30px; width:160px'/>Add a question <span class="glyphicon glyphicon-plus"></span></button><br/> <br/>
+		 <div id="create">
+		 	 <h1> <font color="white">Mails : </font></h1>
+			 <div id='mails'> <input type='text' name='teachermail' id='teachermail' placeholder='Enter your mail address here' value='' size=30/><br/></div><br/><br/>
+	    </div>
+		 <div id='boutons'><button type='button' class="btn btn-primary" id='nouveauMail' style='height:30px; width:160px'/>Add a student mail <span class="glyphicon glyphicon-envelope"></span></button></div>
+
+		 <div id='check'>
+		 	<button type='button' class="btn btn-warning" id='verify' style='height:45px; width:160px'/> Check your e-test <span class="glyphicon glyphicon-search"></span></button><br/>
 			<button type='button' class="btn btn-success" id='valider' style='height:45px; width:160px'> Done <span class="glyphicon glyphicon-ok"></span></button><br/>
 			<button type="button" class="btn btn-danger btn-lg" onclick="self.location.href='index.php'" style='height:45px; width:160px'>Back to menu <span class="glyphicon glyphicon-home"></span></button>
 		</div>

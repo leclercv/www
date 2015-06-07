@@ -14,14 +14,14 @@ mysql_query("SET NAMES UTF8");
 	<body>
 		 <div id="title">Answer an e-Test </div>
 		 <br>	
-		 <p> <h3>Enter your mail address, your token and then click 'OK'</h3> </p>
+		 <p> <div id="create"><font color="white"><h3>Enter your mail address, your token and then click 'OK'.</h3></font></div> </p>
 		 <br>
 		 <div class="input-group">
 
 			<form name="validation" method="post">
 
 				<input type="text"class="form-control" placeholder="Mail" aria-describedby="basic-addon1" name="mail"/>
-		       	<input type="text" class="form-control" placeholder="Token" aria-describedby="basic-addon1" name="key"/></br>
+		       	<input type="text" class="form-control" placeholder="Token" aria-describedby="basic-addon1" name="key"/>
 				<?php
 			        if(isset($_POST['valider'])){
 			        	$mailconf = "";
@@ -43,12 +43,12 @@ mysql_query("SET NAMES UTF8");
 		    	?>
 		    	
 		        <center>
-		        <input name ="valider" class="btn btn-success btn-lg" type="submit" onclick; value="OK">
+		        </div>
+		        <br/><input name ="valider" class="btn btn-success btn-lg" type="submit" onclick; value="OK">
     		</form>
     		
     		<button type="button" class="btn btn-danger btn-lg" onclick="self.location.href='index.php'"onclick>Back to menu <span class="glyphicon glyphicon-home"></span></button>
     		</center>
-    	</div>
 
     </center>
 	</body>

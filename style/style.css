@@ -55,8 +55,7 @@ background-color:grey;
 
 #create{
  text-align: center;
-  color: white;
-   font-family: 'geometria_lightlight';
+ font-family: 'geometria_lightlight';
 }
 
 #answer{
@@ -68,8 +67,8 @@ background-color:grey;
 }
 
 #check{
- position: absolute;
- top :140px;
+ position: fixed;
+ top :280px;
  left: 40px;
 }
 
