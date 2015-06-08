@@ -696,6 +696,7 @@ mysql_query("SET NAMES UTF8");
 			if(isset($_POST['validation'])){
 				$reponsesafe = addslashes($_POST['validation']);
 				$to = "";
+				$toname = "";
 				$listmail = "";
 				$textmail = "";
 				$tabrep = explode(" ~ ", $reponsesafe);
@@ -703,26 +704,33 @@ mysql_query("SET NAMES UTF8");
 				$reponse = $tabrep[1];
 				$mail = $tabrep[2];
 				$vidimage = $tabrep[3];
+				$listnameform = $tabrep[4];
 				$token = microtime(true);
 				$token = md5($token);
-				$sql = 'INSERT INTO Form VALUES ("'.$token.'", "'.$reponse.'", "'.$vidimage.'", "'.$mail.'", "'.$question.'")';
+				$sql = 'INSERT INTO Form VALUES ("'.$token.'", "'.$reponse.'", "'.$vidimage.'", "'.$mail.'", "'.$question.'", "'.$listnameform.'")';
 				mysql_query ($sql) or die ('Erreur SQL !'.$sql.'<br />'.mysql_error());
 				$req = mysql_query("SELECT Mail FROM Form WHERE Token = '".$token."'") or exit(mysql_error());
 				list($listmail)=mysql_fetch_row($req); 
 				$tabmail = explode(" | ", $listmail);
-				for($i = 1; $i < count($tabmail); $i++){
-					if($i == count($tabmail)-1){
+				$tabnameform = explode(" | ", $listnameform);
+				for($i = 1; $i < count($tabmail); $i++)
+				{
+					if($i == count($tabmail)-1)
+					{
 						$to = $to.$tabmail[$i];
+						$toname = $toname." ".$tabnameform[$i]." : ".$tabmail[$i]." \n";
 					}
-					else{
+					else
+					{
 						$to = $to.$tabmail[$i].", ";
+						$toname = $toname." ".$tabnameform[$i]." : ".$tabmail[$i]." \n";
 					}
 				}
-				$textmail = "The user ".$tabmail[0]." has created a test ! \n You can access to this test on our website by using your token and your mail account \n Token : ".$token;
-				$textmailteacher = "You can access it by using your token \n Token : ".$token." \n The test has been sent to : ".$to;
+				$textmail = "The user ".$tabnameform[0]." has created a test ! \n You can access to this test on our website by using your token and your mail account \n Token : ".$token;
+				$textmailteacher = "You can access it by using your token \n Token : ".$token." \n The test has been sent to : ".$toname;
 				mail($to, 'Someone has created a test !', $textmail);
 				mail($tabmail[0], 'Your test is created !', $textmailteacher);
-				$_SESSION['to'] = $to;
+				$_SESSION['to'] = $toname;
 				$_SESSION['tok'] = $token;
 				echo "<script type='text/javascript'>document.location.replace('create2.php');</script>";
 			}
