@@ -648,7 +648,7 @@ mysql_query("SET NAMES UTF8");
 				$vidimage = $tabrep[3];
 				$token = microtime(true);
 				$token = md5($token);
-				$sql = 'INSERT INTO Form VALUES ("'.$token.'", "'.$reponse.'", "'.$vidimage.'"", "'.$mail.'", "'.$question.'")';
+				$sql = 'INSERT INTO Form VALUES ("'.$token.'", "'.$reponse.'", "'.$vidimage.'", "'.$mail.'", "'.$question.'")';
 				mysql_query ($sql) or die ('Erreur SQL !'.$sql.'<br />'.mysql_error());
 				$req = mysql_query("SELECT Mail FROM Form WHERE Token = '".$token."'") or exit(mysql_error());
 				list($listmail)=mysql_fetch_row($req); 
