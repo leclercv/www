@@ -23,16 +23,27 @@
 				$question = "";
 				$answer = "";
 				$hasansw = "";
+				$videoimage = "";
 				$req = mysql_query("SELECT Question FROM Form WHERE Token = '".$token."'") or exit(mysql_error());
 				list($question)=mysql_fetch_row($req); 
 				$req = mysql_query("SELECT Answer FROM Form WHERE Token = '".$token."'") or exit(mysql_error());
 				list($answer)=mysql_fetch_row($req); 
+				$req = mysql_query("SELECT GAnswer FROM Form WHERE Token = '".$token."'") or exit(mysql_error());
+				list($videoimage)=mysql_fetch_row($req); 
 				$tabquest = explode(" | ", $question);
 				$tabansw = explode(" | ", $answer);
+				$tabvideoimage = explode(" | ", $videoimage);
 				echo "<form method='post'>";
 				for($i = 0; $i < count($tabquest); $i++){
 					echo "<h1>".substr($tabquest[$i], 1)."</h1>";
-
+					if($tabvideoimage[$i] != "!" && strstr($tabvideoimage[$i],"youtube"))
+					{
+						echo "<br> <iframe width=\"420\" height=\"315\" src=\"https://www.youtube.com/embed/".substr($tabvideoimage[$i], 32)."\" frameborder=\"0\" allowfullscreen></iframe><br>";
+					}
+					if($tabvideoimage[$i] != "!" && !(strstr($tabvideoimage[$i],"youtube")))
+					{
+						echo "<br><img src=\"".$tabvideoimage[$i]."\"width=\"420\" height=\"315\"><br> ";
+					}
 					if($tabquest[$i]{0} == 1){
 						$tabanswcourant = explode(" _ ", $tabansw[$i]);
 							for($a = 0; $a < count($tabanswcourant); $a++){
