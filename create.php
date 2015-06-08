@@ -16,6 +16,7 @@ mysql_query("SET NAMES UTF8");
 
 	questions = new Array;
 	mails = new Array;
+	mailsname = new Array;
 	media = new Array;
 	mediabool = new Array;
 
@@ -37,6 +38,7 @@ mysql_query("SET NAMES UTF8");
 			var messagerrorprop = "";
 			var questionerrorprop = "";
 			var messagerrormail = "";
+			var messagerrorname = "";
 			var nberrormail = "";
 			var cpterror = 0;
 
@@ -55,6 +57,8 @@ mysql_query("SET NAMES UTF8");
 				questionerrortype = questionerrortype + " & " + lasterrortype;
 				messagerrortype = messagerrortype + questionerrortype;
 			}
+
+			messagerrortype = messagerrortype + "\n"
 			//intitule de question
 			for(var cpt =1;cpt<=i;cpt++){
 				if($("#question"+cpt).val() == ''){
@@ -80,14 +84,14 @@ mysql_query("SET NAMES UTF8");
 				nbprop = questions[compteurprop].toString().split("Proposition").length-2;
 				for(var scpt =1;scpt<=nbprop;scpt++){
 					if($("#question"+cptprop+"proposition"+scpt).val() == ''){
-						messagerrorprop = " \n You left an empty field at the proposition " + scpt + " of the question " + cptprop ;
+						messagerrorprop = " You left an empty field at the proposition " + scpt + " of the question " + cptprop ;
 						cpterror++;
 						}
 					}
 				compteurprop ++;
 			}
 
-			//prof
+			//mail prof
 			var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
 	        var emailaddressVal = $("#teachermail").val();
 		         
@@ -99,8 +103,15 @@ mysql_query("SET NAMES UTF8");
        		   cpterror++;
      		} 
 
-		    //eleves
+     		//name prof
+     		var nameVal = $("#teachername").val();
 
+		    if(nameVal == ''){
+		        messagerrorname = "Teacher\'s name field is empty \n";
+			    cpterror++;
+     		}
+
+		    //mail eleves
 		    for(var cptbis = 1;cptbis<=nbmail;cptbis++){
 		       	emailaddressVal =  	$("#studentmail"+cptbis).val();
 		  		if(emailaddressVal == '') {
@@ -112,9 +123,19 @@ mysql_query("SET NAMES UTF8");
 		       	} 
 			}
 
+			//name eleve
+			for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+     			var nameVal = $("#studentname"+cptbis).val();
+ 
+			    if(nameVal == ''){
+			        messagerrorname =  messagerrorname + "The name field of student "+cptbis+" is empty \n";
+				    cpterror++;
+	     		}
+	     	}
+
 			//Concatenation des messages d'erreurs
 
-			messagerrorfinal = cpterror + " error(s) have been detected : \n" + messagerrortype + "\n" + messagerrortitle + messagerrorprop + "\n" + messagerrormail;
+			messagerrorfinal = cpterror + " error(s) have been detected : \n \n" + messagerrortype + messagerrortitle + messagerrorprop + "\n" + messagerrormail + messagerrorname;
 
 			if(cpterror==0){
 				alert("There is no error in your test :)");
@@ -176,7 +197,15 @@ mysql_query("SET NAMES UTF8");
 			listemail = $("#teachermail").val();
 
 			for(var cptbis = 1;cptbis<=nbmail;cptbis++){
-		   		listemail = listemail + " | "+$("#studentmail"+cptbis).val();
+		   		listemail = listemail + " | " +$("#studentmail"+cptbis).val();
+			}
+
+			// Les noms
+
+			listename = $("#teachername").val();
+
+			for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+		   		listename = listename + " | " +$("#studentname"+cptbis).val();
 			}
 
 			// Les médias
@@ -212,7 +241,6 @@ mysql_query("SET NAMES UTF8");
 			var cpterror = 0;
 
 			//type
-
 			for(var cpt =1;cpt<=i;cpt++){
 				if($("#typequestion"+cpt).val() == 'choose'){
 					questionerrortype = questionerrortype + " " + cpt;  
@@ -221,32 +249,31 @@ mysql_query("SET NAMES UTF8");
 					messagerrortype = "You didn't choose any type for question " + questionerrortype;
 				}
 			}
-
 			if(cpterror > 1){
 				messagerrortype = "You didn't choose any type for questions";
 				questionerrortype = questionerrortype.substring(0, questionerrortype.length-1);
 				questionerrortype = questionerrortype + " & " + lasterrortype;
 				messagerrortype = messagerrortype + questionerrortype;
 			}
+
+			messagerrortype = messagerrortype + "\n"
 				
 			//intitule de question
-
 			for(var cpt =1;cpt<=i;cpt++){
 				if($("#question"+cpt).val() == ''){
 					questionerrortitle = questionerrortitle + " " + cpt;  
 					lasterrortitle = cpt;
-					cpterrortitle++;
 					cpterror++;
+					cpterrortitle++;
 				}
 			}
-
 			if(cpterrortitle > 1){
 				messagerrortitle = "You left an empty field at the questions";
 				questionerrortitle = questionerrortitle.substring(0, questionerrortitle.length-1);
 				questionerrortitle = questionerrortitle + "& " + lasterrortitle;
 				messagerrortitle = messagerrortitle + questionerrortitle;
 			}
-			else{
+			else if(cpterrortitle == 1){
 				messagerrortitle = "You left an empty field at question " + questionerrortitle; 
 			}
 
@@ -265,44 +292,60 @@ mysql_query("SET NAMES UTF8");
 				compteurprop ++;
 			}
 
-			//Les mails
-			//prof
+			//mail prof
 			var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-			var emailaddressVal = $("#teachermail").val();
-			         
-		    if(emailaddressVal == '') {
-			    messagerrormail = "Teacher\'s mail field is empty \n";
-		        cpterror++;
-		    }else if(!emailReg.test(emailaddressVal)) {
+	        var emailaddressVal = $("#teachermail").val();
+		         
+		    if(emailaddressVal == ''){
+		        messagerrormail = "Teacher\'s mail field is empty \n";
+			    cpterror++;
+     		}else if(!emailReg.test(emailaddressVal)) {
 				messagerrormail = "Teacher's mail address is incorrect \n";
-	            cpterror++;
-			} 
+       		   cpterror++;
+     		} 
 
-	       //eleves
+     		//name prof
+     		var nameVal = $("#teachername").val();
 
+		    if(nameVal == ''){
+		        messagerrorname = "Teacher\'s name field is empty \n";
+			    cpterror++;
+     		}
+
+		    //mail eleves
 		    for(var cptbis = 1;cptbis<=nbmail;cptbis++){
-		    	emailaddressVal =  	$("#studentmail"+cptbis).val();
-		   		if(emailaddressVal == '') {
+		       	emailaddressVal =  	$("#studentmail"+cptbis).val();
+		  		if(emailaddressVal == '') {
 		           	messagerrormail = messagerrormail + "The mail address field of student "+cptbis+" is empty \n";
 		           	cpterror++;
-	     		}else if(!emailReg.test(emailaddressVal)) {
+	    		}else if(!emailReg.test(emailaddressVal)) {
 					messagerrormail = messagerrormail + "The mail address of student "+cptbis+" is incorrect \n";
-	         	   cpterror++;
-	        	} 
+	        	   cpterror++;
+		       	} 
 			}
+
+			//name eleve
+			for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+     			var nameVal = $("#studentname"+cptbis).val();
+ 
+			    if(nameVal == ''){
+			        messagerrorname =  messagerrorname + "The name field of student "+cptbis+" is empty \n";
+				    cpterror++;
+	     		}
+	     	}
 
 			//Concatenation des messages d'erreurs
 
-			messagerrorfinal = cpterror + " errors have been detected : \n" + messagerrortype + "\n" + messagerrortitle + messagerrorprop + "\n" + messagerrormail;
+			messagerrorfinal = cpterror + " error(s) have been detected : \n" + messagerrortype + messagerrortitle + messagerrorprop + "\n" + messagerrormail + messagerrorname;
 
 			if(cpterror==0){
 				resultatfinal = resultatfinal.split("~").join(" ");
 				resultatrepfinal =  resultatrepfinal.split("~").join(" ");
 
-				var reponse = resultatfinal + " ~ " + resultatrepfinal + " ~ " + listemail + " ~ " + resultatmediafinal;
+				var reponse = resultatfinal + " ~ " + resultatrepfinal + " ~ " + listemail + " ~ " + resultatmediafinal + " ~ " + listename;
 				reponse = reponse.split("'").join("&#8217;");
 
-				//alert("Questions : " +resultatfinal  + " \n \n Réponses : " + resultatrepfinal + " \n \n Mails : " + listemail + " \n \n Media : " + resultatmediafinal );
+				alert("Questions : " +resultatfinal  + " \n \n Réponses : " + resultatrepfinal + " \n \n Mails : " + listemail + " \n \n Media : " + resultatmediafinal + "\n \n Names : " + listename );
 				document.getElementById('final').innerHTML = "<form method='post' id='formulaire'><input type='hidden' name='validation' value='"+reponse+"'/></form>";
 				document.getElementById('formulaire').submit();
 			}
@@ -460,26 +503,23 @@ mysql_query("SET NAMES UTF8");
 			var compteur = 0;
 
 			for(var cptprop =1;cptprop<=itotal;cptprop++){
-				nbprop = questions[compteur].toString().split("Proposition").length-2;
-				for(var scpt =1;scpt<=nbprop;scpt++){
-					$("#question"+cptprop+"proposition"+scpt).val(contenuproposition[indextab]);
-					indextab++;
+					nbprop = questions[compteur].toString().split("Proposition").length-2;
+					for(var scpt =1;scpt<=nbprop;scpt++){
+						$("#question"+cptprop+"proposition"+scpt).val(contenuproposition[indextab]);
+						indextab++;
+					}
+					
+				//Les types des questions
+				for(var cptbis = 1;cptbis<=itotal;cptbis++){
+			   		$("#typequestion"+cptbis).val(questiontype[cptbis]);
 				}
-				
-			//Les types des questions
-			for(var cptbis = 1;cptbis<=itotal;cptbis++){
-		   		$("#typequestion"+cptbis).val(questiontype[cptbis]);
-			}
 
-						//les medias
-
+				//les medias
 				for(var cptbisbrouk = 0;cptbisbrouk<=itotal;cptbisbrouk++){
-		   			$("#media"+cptbisbrouk).val(allmedia[cptbisbrouk]);
+			   		$("#media"+cptbisbrouk).val(allmedia[cptbisbrouk]);
 				}
-
-
-			compteur ++;
-		}
+				compteur ++;
+			}
 
 		}	
 
@@ -575,7 +615,7 @@ mysql_query("SET NAMES UTF8");
 			$("#nouveauMail").click(function(){   
 				nbmail ++;
 
-				mails.push("<font color='white'>Student " + nbmail + "  </font><input type='text' name='studentmail"+nbmail+"' id='studentmail"+nbmail+"' placeholder='Enter a student mail address here' value='' size=30 maxlength=50/><br/>");
+				mails.push("<font color='white'>Student " + nbmail + "  </font><input type='text' name='studentmail"+nbmail+"' id='studentmail"+nbmail+"' placeholder='Enter a student mail here' value='' size=25 maxlength=50/>  <input type='text' name='studentname"+nbmail+"' id='studentname"+nbmail+"' placeholder='Enter the student name here' value='' size=20 maxlength=50/><br/>");
 
 				var contenumail = "";
 
@@ -583,18 +623,27 @@ mysql_query("SET NAMES UTF8");
 			   		contenumail = contenumail + mails[cpt];
 				}
 
-				contenumailfinal = "<input type='text' name='teachermail' id='teachermail' placeholder='Enter your mail address here' value=''size=30 maxlength=50/><br/></br>" + contenumail;
-				
+				contenumailfinal = "<font color='white'>Teacher  </font><input type='text' name='teachermail' id='teachermail' placeholder='Enter your mail address here' value=''size=25 maxlength=50/>  <input type='text' name='teachername' id='teachername' placeholder='Enter your name here' value=''size=20 maxlength=20/><br/></br>" + contenumail;
 				//Sauvegarder les valeurs des inputs : 
 
 				//Le mail de l'enseignant
 				var mailprof= $("#teachermail").val();
+
+				//Le nom de l'enseignant
+				var nameprof= $("#teachername").val();
 
 				//Les mails des élèves
 				var arraymail = new Array;
 
 				for(var cptbis = 1;cptbis<=nbmail;cptbis++){
 					arraymail[cptbis] = $("#studentmail"+cptbis).val();
+				}
+
+				//Les noms des élèves
+				var arraymailname = new Array;
+
+				for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+					arraymailname[cptbis] = $("#studentname"+cptbis).val();
 				}
 
 			    document.getElementById('mails').innerHTML = contenumailfinal;
@@ -604,9 +653,17 @@ mysql_query("SET NAMES UTF8");
 			    //Le mail de l'enseignant
 				$("#teachermail").val(mailprof);
 
+				//Le nom de l'enseignant
+				$("#teachername").val(nameprof);
+
 				//Les mails des élèves
 				for(var cptbis = 1;cptbis<=nbmail;cptbis++){
 				   	$("#studentmail"+cptbis).val(arraymail[cptbis]);
+				}
+
+				//Les noms des élèves
+				for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+				   	$("#studentname"+cptbis).val(arraymailname[cptbis]);
 				}
 			});
 		});  
@@ -623,7 +680,7 @@ mysql_query("SET NAMES UTF8");
 		 <div id='boutons'><button type='button' class="btn btn-info" id='nouveauInput' style='height:30px; width:160px'/>Add a question <span class="glyphicon glyphicon-plus"></span></button><br/> <br/>
 		 <div id="create">
 		 	 <h1> <font color="white">Mails : </font></h1>
-			 <div id='mails'> <input type='text' name='teachermail' id='teachermail' placeholder='Enter your mail address here' value='' size=30/><br/></div><br/><br/>
+			 <div id='mails'><font color='white'>Teacher  </font> <input type='text' name='teachermail' id='teachermail' placeholder='Enter your mail address here' value='' size=25/> <input type='text' name='teachername' id='teachername' placeholder='Enter your name here' value='' size=20/><br/></div><br/><br/>
 	    </div>
 		 <div id='boutons'><button type='button' class="btn btn-primary" id='nouveauMail' style='height:30px; width:160px'/>Add a student mail <span class="glyphicon glyphicon-envelope"></span></button></div>
 
