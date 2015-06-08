@@ -240,6 +240,7 @@ mysql_query("SET NAMES UTF8");
 
 			var cpterror = 0;
 
+
 			//type
 			for(var cpt =1;cpt<=i;cpt++){
 				if($("#typequestion"+cpt).val() == 'choose'){
