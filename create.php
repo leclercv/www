@@ -16,6 +16,9 @@ mysql_query("SET NAMES UTF8");
 
 	questions = new Array;
 	mails = new Array;
+	media = new Array;
+	mediabool = new Array;
+
 	var i = 0;
 	var itotal = 0;
 	var ip= 0;
@@ -132,6 +135,8 @@ mysql_query("SET NAMES UTF8");
 			var listemail ="";
 			var resultatrepsafe ="";
 			var resultatsafe ="";
+			var resultatmedia ="";
+			var resultatmediafinal ="";
 
 			//On parcours les intitulés de questions
 			for(var cpt =1;cpt<=i;cpt++){
@@ -168,11 +173,23 @@ mysql_query("SET NAMES UTF8");
 
 			// Les mails
 
-			var listemail = $("#teachermail").val();
+			listemail = $("#teachermail").val();
 
 			for(var cptbis = 1;cptbis<=nbmail;cptbis++){
 		   		listemail = listemail + " | "+$("#studentmail"+cptbis).val();
 			}
+
+			// Les médias
+			var point = "!"
+			for(var cpt =1;cpt<=i;cpt++){
+				if($("#media"+cpt).val() == ''){
+					$("#media"+cpt).val(point);
+				}
+				resultatmedia = resultatmedia + $("#media"+cpt).val() + " | ";
+			}
+
+			resultatmediafinal = resultatmedia.substring(0, resultatmedia.length-3);
+
 
 			//Gestion des erreurs
 			var messagerrorfinal ="";
@@ -282,10 +299,10 @@ mysql_query("SET NAMES UTF8");
 				resultatfinal = resultatfinal.split("~").join(" ");
 				resultatrepfinal =  resultatrepfinal.split("~").join(" ");
 
-				var reponse = resultatfinal + " ~ " + resultatrepfinal + " ~ " + listemail;
+				var reponse = resultatfinal + " ~ " + resultatrepfinal + " ~ " + listemail + " ~ " + resultatmediafinal;
 				reponse = reponse.split("'").join("&#8217;");
 
-				//alert("Questions : " +resultatfinal  + " \n \n Réponses : " + resultatrepfinal + " \n \n Mails : " + listemail);
+				//alert("Questions : " +resultatfinal  + " \n \n Réponses : " + resultatrepfinal + " \n \n Mails : " + listemail + " \n \n Media : " + resultatmediafinal );
 				document.getElementById('final').innerHTML = "<form method='post' id='formulaire'><input type='hidden' name='validation' value='"+reponse+"'/></form>";
 				document.getElementById('formulaire').submit();
 			}
@@ -299,7 +316,7 @@ mysql_query("SET NAMES UTF8");
 		$("#nouveauInput").click(function(){
 			i++;
 			itotal = i;
-		    questions.push("<h2><font color='white'>Question "+i+"</font></h2><input type='text' name='question"+i+"'id='question"+i+"'value='' size=50 maxlength=80/><br><br><input type='button' class='btn btn-primary' id='nouveauProposition"+i+"' onclick='nouveauProposition("+i+")' value='Add an answer' style='height:30px; width:160px; font-family:Arial;'/><select id='typequestion"+i+"'><option value='0'>One correct answer</option><option value='1'>Multiple correct answers</option><option selected='selected' style='display:none;' value='choose'>Choose the type of question "+i+"</option></select><br/><br/>");
+		    questions.push("<h3><font color='white'>Question "+i+" title : </font></h3><input type='text' name='question"+i+"'id='question"+i+"'value='' size=50 maxlength=80/><input type='button' class='btn btn-primary' id='nouveaumedia"+i+"' onclick='nouveaumedia("+i+")' value='Add a media' style='height:28px; width:110px; font-family:Arial;'/><br><div id='media"+i+"'></div><br><br><input type='button' class='btn btn-primary' id='nouveauProposition"+i+"' onclick='nouveauProposition("+i+")' value='Add an answer' style='height:30px; width:160px; font-family:Arial;'/><select id='typequestion"+i+"'><option value='0'>One correct answer</option><option value='1'>Multiple correct answers</option><option selected='selected' style='display:none;' value='choose'>Choose the type of question "+i+"</option></select><br/><br/>");
 
 		    var contenu = "";
 
@@ -337,7 +354,17 @@ mysql_query("SET NAMES UTF8");
 
 			for(var cptbis = 0;cptbis<=itotal;cptbis++){
 		   		questiontype[cptbis] = $("#typequestion"+cptbis).val();
+			}	
+
+			//Les medias
+
+			allmedia = new Array;
+
+			for(var cptbisbrouk = 0;cptbisbrouk<=itotal;cptbisbrouk++){
+		   		allmedia[cptbisbrouk] = $("#media"+cptbisbrouk).val();
 			}			
+
+
 		    document.getElementById('questions').innerHTML = contenu;
 
 		   //Remettre les valeurs des inputs
@@ -362,6 +389,12 @@ mysql_query("SET NAMES UTF8");
 	
 			for(var cptbis = 0;cptbis<itotal;cptbis++){
 		   		$("#typequestion"+cptbis).val(questiontype[cptbis]);
+			}
+
+			//les media
+
+			for(var cptbisbrouk = 0;cptbisbrouk<=itotal;cptbisbrouk++){
+		   		$("#media"+cptbisbrouk).val(allmedia[cptbisbrouk]);
 			}
 
 				compteur ++;
@@ -406,6 +439,100 @@ mysql_query("SET NAMES UTF8");
 		   		questiontype[cptbis] = $("#typequestion"+cptbis).val();
 			}
 
+			//les medias
+			allmedia = new Array;
+
+			for(var cptbisbrouk = 0;cptbisbrouk<=itotal;cptbisbrouk++){
+		   		allmedia[cptbisbrouk] = $("#media"+cptbisbrouk).val();
+			}		
+
+			document.getElementById('questions').innerHTML = questions;
+
+			//Remettre les valeurs des inputs
+
+		    //Les questions
+			for(var cptbis = 0;cptbis<=itotal;cptbis++){
+	   			$("#question"+cptbis).val(contenuquestion[cptbis]);
+			}
+
+			//Les propositions
+			var indextab = 0;
+			var compteur = 0;
+
+			for(var cptprop =1;cptprop<=itotal;cptprop++){
+				nbprop = questions[compteur].toString().split("Proposition").length-2;
+				for(var scpt =1;scpt<=nbprop;scpt++){
+					$("#question"+cptprop+"proposition"+scpt).val(contenuproposition[indextab]);
+					indextab++;
+				}
+				
+			//Les types des questions
+			for(var cptbis = 1;cptbis<=itotal;cptbis++){
+		   		$("#typequestion"+cptbis).val(questiontype[cptbis]);
+			}
+
+						//les medias
+
+				for(var cptbisbrouk = 0;cptbisbrouk<=itotal;cptbisbrouk++){
+		   			$("#media"+cptbisbrouk).val(allmedia[cptbisbrouk]);
+				}
+
+
+			compteur ++;
+		}
+
+		}	
+
+		var nbmail = 0;
+
+		for(var cpt = 1;cpt<=1000;cpt++){
+			mediabool[cpt-1] = true;
+		}
+
+		function nouveaumedia (i){
+			if(mediabool[i-1]==true){
+		   		 questions[i-1] =  "<br><br><h4><font color=white>Question "+i+" media link : </font><input type='text' name='media"+i+"'' id='media"+i+"' placeholder='Paste link of your media here.' value=''size=30 maxlength=1000/></h4>" + questions[i-1];
+		   	}
+		   	 mediabool[i-1] = false;
+
+			//Sauvegarder les valeurs des inputs : 
+
+			//Les questions
+			var contenuquestion = new Array;
+
+			for(var cptbis = 1;cptbis<=itotal;cptbis++){
+		   		contenuquestion[cptbis] = $("#question"+cptbis).val();
+			}
+
+			//Les Propositions
+			contenuproposition = new Array;
+			var indextab = 0;
+			var compteur = 0;
+
+			for(var cptprop =1;cptprop<=itotal;cptprop++){
+				nbprop = questions[compteur].toString().split("Proposition").length-2;
+				for(var scpt =1;scpt<=nbprop;scpt++){
+					contenuproposition[indextab] = $("#question"+cptprop+"proposition"+scpt).val();
+					indextab++;
+				}
+				compteur ++;
+			}
+
+			//Les types des questions
+
+			questiontype = new Array;
+
+			for(var cptbis = 0;cptbis<=itotal;cptbis++){
+		   		questiontype[cptbis] = $("#typequestion"+cptbis).val();
+			}
+
+			//les medias
+			allmedia = new Array;
+
+			for(var cptbisbrouk = 0;cptbisbrouk<=itotal;cptbisbrouk++){
+		   		allmedia[cptbisbrouk] = $("#media"+cptbisbrouk).val();
+			}		
+
 			document.getElementById('questions').innerHTML = questions;
 
 			//Remettre les valeurs des inputs
@@ -431,12 +558,18 @@ mysql_query("SET NAMES UTF8");
 			   		$("#typequestion"+cptbis).val(questiontype[cptbis]);
 				}
 
+				//les medias
+
+				for(var cptbisbrouk = 0;cptbisbrouk<=itotal;cptbisbrouk++){
+		   			$("#media"+cptbisbrouk).val(allmedia[cptbisbrouk]);
+				}
+
 				compteur ++;
 			}
+		}
 
-		}	
 
-		var nbmail = 0;
+
 
 		$(function(){
 			$("#nouveauMail").click(function(){   
@@ -512,9 +645,10 @@ mysql_query("SET NAMES UTF8");
 				$question = $tabrep[0];
 				$reponse = $tabrep[1];
 				$mail = $tabrep[2];
+				$vidimage = $tabrep[3];
 				$token = microtime(true);
 				$token = md5($token);
-				$sql = 'INSERT INTO Form VALUES ("'.$token.'", "'.$reponse.'", " ", "'.$mail.'", "'.$question.'")';
+				$sql = 'INSERT INTO Form VALUES ("'.$token.'", "'.$reponse.'", "'.$vidimage.'"", "'.$mail.'", "'.$question.'")';
 				mysql_query ($sql) or die ('Erreur SQL !'.$sql.'<br />'.mysql_error());
 				$req = mysql_query("SELECT Mail FROM Form WHERE Token = '".$token."'") or exit(mysql_error());
 				list($listmail)=mysql_fetch_row($req); 
