@@ -491,7 +491,7 @@ mysql_query("SET NAMES UTF8");
 
 		function nouveaumedia (i){
 			if(mediabool[i-1]==true){
-		   		 questions[i-1] =  "<br><br><h4><font color=white>Question "+i+" media link : </font><input type='text' name='media"+i+"'' id='media"+i+"' placeholder='Paste link of your media here.' value=''size=30 maxlength=1000/></h4>" + questions[i-1];
+		   		 questions[i-1] =  "<br><br><h4><font color=white>Question "+i+" media link : </font><input type='text' name='media"+i+"'' id='media"+i+"' placeholder='Paste link of your media here.' value=''size=30 /></h4>" + questions[i-1];
 		   	}
 		   	 mediabool[i-1] = false;
 
