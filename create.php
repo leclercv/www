@@ -20,119 +20,107 @@ mysql_query("SET NAMES UTF8");
 	var itotal = 0;
 	var ip= 0;
 
-		$(function() {
-			$("#verify").click(function(){
-				//Gestion des erreurs
-				var messagerrorfinal ="";
+	$(function() {
+		$("#verify").click(function(){
+			//Gestion des erreurs
+			var messagerrorfinal ="";
+			var messagerrortype = "";
+			var questionerrortype = "";
+			var lasterrortype = null;
+			var messagerrortitle = "";
+			var questionerrortitle = "";
+			var lasterrortitle = null;
+			var cpterrortitle = 0;
+			var messagerrorprop = "";
+			var questionerrorprop = "";
+			var messagerrormail = "";
+			var nberrormail = "";
+			var cpterror = 0;
 
-				var messagerrortype = "";
-				var questionerrortype = "";
-				var lasterrortype = null;
-
-				var messagerrortitle = "";
-				var questionerrortitle = "";
-				var lasterrortitle = null;
-				var cpterrortitle = 0;
-
-				var messagerrorprop = "";
-				var questionerrorprop = "";
-
-				var messagerrormail = "";
-				var nberrormail = "";
-
-				var cpterror = 0;
-
-				//type
-
-				for(var cpt =1;cpt<=i;cpt++){
-					if($("#typequestion"+cpt).val() == 'choose'){
-						questionerrortype = questionerrortype + " " + cpt;  
-						lasterrortype = cpt;
-						cpterror++;	
-						messagerrortype = "You didn't choose any type for question " + questionerrortype;
-					}
+			//type
+			for(var cpt =1;cpt<=i;cpt++){
+				if($("#typequestion"+cpt).val() == 'choose'){
+					questionerrortype = questionerrortype + " " + cpt;  
+					lasterrortype = cpt;
+					cpterror++;	
+					messagerrortype = "You didn't choose any type for question " + questionerrortype;
 				}
-
-				if(cpterror > 1){
-					messagerrortype = "You didn't choose any type for questions";
-					questionerrortype = questionerrortype.substring(0, questionerrortype.length-1);
-					questionerrortype = questionerrortype + " & " + lasterrortype;
-					messagerrortype = messagerrortype + questionerrortype;
+			}
+			if(cpterror > 1){
+				messagerrortype = "You didn't choose any type for questions";
+				questionerrortype = questionerrortype.substring(0, questionerrortype.length-1);
+				questionerrortype = questionerrortype + " & " + lasterrortype;
+				messagerrortype = messagerrortype + questionerrortype;
+			}
+			//intitule de question
+			for(var cpt =1;cpt<=i;cpt++){
+				if($("#question"+cpt).val() == ''){
+					questionerrortitle = questionerrortitle + " " + cpt;  
+					lasterrortitle = cpt;
+					cpterror++;
+					cpterrortitle++;
 				}
-
-				//intitule de question
-
-				for(var cpt =1;cpt<=i;cpt++){
-					if($("#question"+cpt).val() == ''){
-						questionerrortitle = questionerrortitle + " " + cpt;  
-						lasterrortitle = cpt;
+			}
+			if(cpterrortitle > 1){
+				messagerrortitle = "You left an empty field at the questions";
+				questionerrortitle = questionerrortitle.substring(0, questionerrortitle.length-1);
+				questionerrortitle = questionerrortitle + "& " + lasterrortitle;
+				messagerrortitle = messagerrortitle + questionerrortitle;
+			}
+			else if(cpterrortitle == 1){
+				messagerrortitle = "You left an empty field at question " + questionerrortitle; 
+			}
+			//Les propositions
+			
+			var compteurprop = 0;
+			for(var cptprop =1;cptprop<=i;cptprop++){
+				nbprop = questions[compteurprop].toString().split("Proposition").length-2;
+				for(var scpt =1;scpt<=nbprop;scpt++){
+					if($("#question"+cptprop+"proposition"+scpt).val() == ''){
+						messagerrorprop = " \n You left an empty field at the proposition " + scpt + " of the question " + cptprop ;
 						cpterror++;
-						cpterrortitle++;
-					}
-				}
-
-				if(cpterrortitle > 1){
-					messagerrortitle = "You left an empty field at the questions";
-					questionerrortitle = questionerrortitle.substring(0, questionerrortitle.length-1);
-					questionerrortitle = questionerrortitle + "& " + lasterrortitle;
-					messagerrortitle = messagerrortitle + questionerrortitle;
-				}
-				else if(cpterrortitle == 1){
-					messagerrortitle = "You left an empty field at question " + questionerrortitle; 
-				}
-
-				//Les propositions
-				
-				var compteurprop = 0;
-
-					for(var cptprop =1;cptprop<=i;cptprop++){
-						nbprop = questions[compteurprop].toString().split("Proposition").length-2;
-						for(var scpt =1;scpt<=nbprop;scpt++){
-							if($("#question"+cptprop+"proposition"+scpt).val() == ''){
-								messagerrorprop = " \n You left an empty field at the proposition " + scpt + " of the question " + cptprop ;
-								cpterror++;
-							}
 						}
-						compteurprop ++;
 					}
+				compteurprop ++;
+			}
 
-				//prof
-				 	var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-			        var emailaddressVal = $("#teachermail").val();
-			         
-			        if(emailaddressVal == '') {
-			            messagerrormail = "Teacher\'s mail field is empty \n";
-			            cpterror++;
-			        } else if(!emailReg.test(emailaddressVal)) {
-						messagerrormail = "Teacher's mail address is incorrect \n";
-			            cpterror++;
-			        } 
+			//prof
+			var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+	        var emailaddressVal = $("#teachermail").val();
+		         
+		    if(emailaddressVal == ''){
+		        messagerrormail = "Teacher\'s mail field is empty \n";
+			    cpterror++;
+     		}else if(!emailReg.test(emailaddressVal)) {
+				messagerrormail = "Teacher's mail address is incorrect \n";
+       		   cpterror++;
+     		} 
 
-			        //eleves
+		    //eleves
 
-			        for(var cptbis = 1;cptbis<=nbmail;cptbis++){
-			        	emailaddressVal =  	$("#studentmail"+cptbis).val();
-				   		if(emailaddressVal == '') {
-			            	messagerrormail = messagerrormail + "The mail address field of student "+cptbis+" is empty \n";
-			            	cpterror++;
-			      		}else if(!emailReg.test(emailaddressVal)) {
-							messagerrormail = messagerrormail + "The mail address of student "+cptbis+" is incorrect \n";
-			         	   cpterror++;
-			        	} 
-					}
+		    for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+		       	emailaddressVal =  	$("#studentmail"+cptbis).val();
+		  		if(emailaddressVal == '') {
+		           	messagerrormail = messagerrormail + "The mail address field of student "+cptbis+" is empty \n";
+		           	cpterror++;
+	    		}else if(!emailReg.test(emailaddressVal)) {
+					messagerrormail = messagerrormail + "The mail address of student "+cptbis+" is incorrect \n";
+	        	   cpterror++;
+		       	} 
+			}
 
-				//Concatenation des messages d'erreurs
+			//Concatenation des messages d'erreurs
 
-				messagerrorfinal = cpterror + " error(s) have been detected : \n" + messagerrortype + "\n" + messagerrortitle + messagerrorprop + "\n" + messagerrormail;
+			messagerrorfinal = cpterror + " error(s) have been detected : \n" + messagerrortype + "\n" + messagerrortitle + messagerrorprop + "\n" + messagerrormail;
 
-				if(cpterror==0){
-					alert("There is no error in your test :)");
-				}
-				else{
-					alert(messagerrorfinal);
-				}
-			});
+			if(cpterror==0){
+				alert("There is no error in your test :)");
+			}
+			else{
+				alert(messagerrorfinal);
+			}
 		});
+	});
 
 
 	$(function() {
@@ -180,131 +168,130 @@ mysql_query("SET NAMES UTF8");
 
 			// Les mails
 
-				var listemail = $("#teachermail").val();
+			var listemail = $("#teachermail").val();
 
-				for(var cptbis = 1;cptbis<=nbmail;cptbis++){
-			   		listemail = listemail + " | "+$("#studentmail"+cptbis).val();
+			for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+		   		listemail = listemail + " | "+$("#studentmail"+cptbis).val();
+			}
+
+			//Gestion des erreurs
+			var messagerrorfinal ="";
+
+			var messagerrortype = "";
+			var questionerrortype = "";
+			var lasterrortype = null;
+
+			var messagerrortitle = "";
+			var questionerrortitle = "";
+			var lasterrortitle = null;
+			var cpterrortitle = 0;
+
+			var messagerrorprop = "";
+			var questionerrorprop = "";
+
+			var messagerrormail = "";
+			var nberrormail = "";
+
+			var cpterror = 0;
+
+			//type
+
+			for(var cpt =1;cpt<=i;cpt++){
+				if($("#typequestion"+cpt).val() == 'choose'){
+					questionerrortype = questionerrortype + " " + cpt;  
+					lasterrortype = cpt;
+					cpterror++;	
+					messagerrortype = "You didn't choose any type for question " + questionerrortype;
 				}
+			}
 
-				//Gestion des erreurs
-				var messagerrorfinal ="";
-
-				var messagerrortype = "";
-				var questionerrortype = "";
-				var lasterrortype = null;
-
-				var messagerrortitle = "";
-				var questionerrortitle = "";
-				var lasterrortitle = null;
-				var cpterrortitle = 0;
-
-				var messagerrorprop = "";
-				var questionerrorprop = "";
-
-				var messagerrormail = "";
-				var nberrormail = "";
-
-				var cpterror = 0;
-
-				//type
-
-				for(var cpt =1;cpt<=i;cpt++){
-					if($("#typequestion"+cpt).val() == 'choose'){
-						questionerrortype = questionerrortype + " " + cpt;  
-						lasterrortype = cpt;
-						cpterror++;	
-						messagerrortype = "You didn't choose any type for question " + questionerrortype;
-					}
-				}
-
-				if(cpterror > 1){
-					messagerrortype = "You didn't choose any type for questions";
-					questionerrortype = questionerrortype.substring(0, questionerrortype.length-1);
-					questionerrortype = questionerrortype + " & " + lasterrortype;
-					messagerrortype = messagerrortype + questionerrortype;
-				}
+			if(cpterror > 1){
+				messagerrortype = "You didn't choose any type for questions";
+				questionerrortype = questionerrortype.substring(0, questionerrortype.length-1);
+				questionerrortype = questionerrortype + " & " + lasterrortype;
+				messagerrortype = messagerrortype + questionerrortype;
+			}
 				
-				//intitule de question
+			//intitule de question
 
-				for(var cpt =1;cpt<=i;cpt++){
-					if($("#question"+cpt).val() == ''){
-						questionerrortitle = questionerrortitle + " " + cpt;  
-						lasterrortitle = cpt;
-						cpterrortitle++;
+			for(var cpt =1;cpt<=i;cpt++){
+				if($("#question"+cpt).val() == ''){
+					questionerrortitle = questionerrortitle + " " + cpt;  
+					lasterrortitle = cpt;
+					cpterrortitle++;
+					cpterror++;
+				}
+			}
+
+			if(cpterrortitle > 1){
+				messagerrortitle = "You left an empty field at the questions";
+				questionerrortitle = questionerrortitle.substring(0, questionerrortitle.length-1);
+				questionerrortitle = questionerrortitle + "& " + lasterrortitle;
+				messagerrortitle = messagerrortitle + questionerrortitle;
+			}
+			else{
+				messagerrortitle = "You left an empty field at question " + questionerrortitle; 
+			}
+
+			//Les propositions
+				
+			var compteurprop = 0;
+
+			for(var cptprop =1;cptprop<=i;cptprop++){
+				nbprop = questions[compteurprop].toString().split("Proposition").length-2;
+				for(var scpt =1;scpt<=nbprop;scpt++){
+					if($("#question"+cptprop+"proposition"+scpt).val() == ''){
+						messagerrorprop = " \n You left an empty field at the proposition " + scpt + " of the question " + cptprop ;
 						cpterror++;
 					}
 				}
+				compteurprop ++;
+			}
 
-				if(cpterrortitle > 1){
-					messagerrortitle = "You left an empty field at the questions";
-					questionerrortitle = questionerrortitle.substring(0, questionerrortitle.length-1);
-					questionerrortitle = questionerrortitle + "& " + lasterrortitle;
-					messagerrortitle = messagerrortitle + questionerrortitle;
-				}
-				else{
-					messagerrortitle = "You left an empty field at question " + questionerrortitle; 
-				}
-
-				//Les propositions
-				
-					var compteurprop = 0;
-
-					for(var cptprop =1;cptprop<=i;cptprop++){
-						nbprop = questions[compteurprop].toString().split("Proposition").length-2;
-						for(var scpt =1;scpt<=nbprop;scpt++){
-							if($("#question"+cptprop+"proposition"+scpt).val() == ''){
-								messagerrorprop = " \n You left an empty field at the proposition " + scpt + " of the question " + cptprop ;
-								cpterror++;
-							}
-						}
-						compteurprop ++;
-					}
-
-				//Les mails
-
-					//prof
-				 	var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-			        var emailaddressVal = $("#teachermail").val();
+			//Les mails
+			//prof
+			var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+			var emailaddressVal = $("#teachermail").val();
 			         
-			        if(emailaddressVal == '') {
-			            messagerrormail = "Teacher\'s mail field is empty \n";
-			            cpterror++;
-			        } else if(!emailReg.test(emailaddressVal)) {
-						messagerrormail = "Teacher's mail address is incorrect \n";
-			            cpterror++;
-			        } 
+		    if(emailaddressVal == '') {
+			    messagerrormail = "Teacher\'s mail field is empty \n";
+		        cpterror++;
+		    }else if(!emailReg.test(emailaddressVal)) {
+				messagerrormail = "Teacher's mail address is incorrect \n";
+	            cpterror++;
+			} 
 
-			        //eleves
+	       //eleves
 
-			        for(var cptbis = 1;cptbis<=nbmail;cptbis++){
-			        	emailaddressVal =  	$("#studentmail"+cptbis).val();
-				   		if(emailaddressVal == '') {
-			            	messagerrormail = messagerrormail + "The mail address field of student "+cptbis+" is empty \n";
-			            	cpterror++;
-			      		}else if(!emailReg.test(emailaddressVal)) {
-							messagerrormail = messagerrormail + "The mail address of student "+cptbis+" is incorrect \n";
-			         	   cpterror++;
-			        	} 
-					}
+		    for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+		    	emailaddressVal =  	$("#studentmail"+cptbis).val();
+		   		if(emailaddressVal == '') {
+		           	messagerrormail = messagerrormail + "The mail address field of student "+cptbis+" is empty \n";
+		           	cpterror++;
+	     		}else if(!emailReg.test(emailaddressVal)) {
+					messagerrormail = messagerrormail + "The mail address of student "+cptbis+" is incorrect \n";
+	         	   cpterror++;
+	        	} 
+			}
 
-				//Concatenation des messages d'erreurs
+			//Concatenation des messages d'erreurs
 
-				messagerrorfinal = cpterror + " errors have been detected : \n" + messagerrortype + "\n" + messagerrortitle + messagerrorprop + "\n" + messagerrormail;
+			messagerrorfinal = cpterror + " errors have been detected : \n" + messagerrortype + "\n" + messagerrortitle + messagerrorprop + "\n" + messagerrormail;
 
-				if(cpterror==0){
-					resultatfinal = resultatfinal.split("~").join(" ");
-					resultatrepfinal =  resultatrepfinal.split("~").join(" ");
+			if(cpterror==0){
+				resultatfinal = resultatfinal.split("~").join(" ");
+				resultatrepfinal =  resultatrepfinal.split("~").join(" ");
 
-					var reponse = resultatfinal + " ~ " + resultatrepfinal + " ~ " + listemail;
-					reponse = reponse.split("'").join("&#8217;");
+				var reponse = resultatfinal + " ~ " + resultatrepfinal + " ~ " + listemail;
+				reponse = reponse.split("'").join("&#8217;");
 
-					//alert("Questions : " +resultatfinal  + " \n \n Réponses : " + resultatrepfinal + " \n \n Mails : " + listemail);
-					document.getElementById('final').innerHTML = "<form method='post' id='formulaire'><input type='hidden' name='validation' value='"+reponse+"'/></form>";
-					document.getElementById('formulaire').submit();
-				}
-				else{
-					alert(messagerrorfinal);
-				}
+				//alert("Questions : " +resultatfinal  + " \n \n Réponses : " + resultatrepfinal + " \n \n Mails : " + listemail);
+				document.getElementById('final').innerHTML = "<form method='post' id='formulaire'><input type='hidden' name='validation' value='"+reponse+"'/></form>";
+				document.getElementById('formulaire').submit();
+			}
+			else{
+				alert(messagerrorfinal);
+			}
 		});
 	});
 
@@ -312,8 +299,7 @@ mysql_query("SET NAMES UTF8");
 		$("#nouveauInput").click(function(){
 			i++;
 			itotal = i;
-		    questions.push(
-		    "<h2><font color='white'>Question " + i + "</font></h2><input type ='text' name ='question" + i + "' id='question" + i +"' value='' size=50 maxlength=80/><br/><br/><input type='button' class='btn btn-primary' id='nouveauProposition"+i+"' onclick='nouveauProposition("+i+")' value='Add an answer' style='height:30px; width:160px; font-family:Arial;'/><select id='typequestion"+i+"'><option value='0'>One correct answer</option><option value='1'>Multiple correct answers</option><option selected='selected' style='display:none' value='choose'>Choose the type of question "+i+"</option></select><br/><br/>");
+		    questions.push("<h2><font color='white'>Question "+i+"</font></h2><input type='text' name='question"+i+"'id='question"+i+"'value='' size=50 maxlength=80/><br><br><input type='button' class='btn btn-primary' id='nouveauProposition"+i+"' onclick='nouveauProposition("+i+")' value='Add an answer' style='height:30px; width:160px; font-family:Arial;'/><select id='typequestion"+i+"'><option value='0'>One correct answer</option><option value='1'>Multiple correct answers</option><option selected='selected' style='display:none;' value='choose'>Choose the type of question "+i+"</option></select><br/><br/>");
 
 		    var contenu = "";
 
@@ -349,18 +335,15 @@ mysql_query("SET NAMES UTF8");
 
 			questiontype = new Array;
 
-			if(i>1){
-				for(var cptbis = 1;cptbis<itotal;cptbis++){
-			   		questiontype[cptbis] = $("#typequestion"+cptbis).val();
-				}
-			}
-			
+			for(var cptbis = 0;cptbis<=itotal;cptbis++){
+		   		questiontype[cptbis] = $("#typequestion"+cptbis).val();
+			}			
 		    document.getElementById('questions').innerHTML = contenu;
 
-		    //Remettre les valeurs des inputs
+		   //Remettre les valeurs des inputs
 
 		    //Les questions
-			for(var cptbis = 1;cptbis<i;cptbis++){
+			for(var cptbis = 0;cptbis<=itotal;cptbis++){
 	   			$("#question"+cptbis).val(contenuquestion[cptbis]);
 			}
 
@@ -368,21 +351,21 @@ mysql_query("SET NAMES UTF8");
 			var indextab = 0;
 			var compteur = 0;
 
-			for(var cptprop =1;cptprop<=i;cptprop++){
+			for(var cptprop =1;cptprop<=itotal;cptprop++){
 				nbprop = questions[compteur].toString().split("Proposition").length-2;
 				for(var scpt =1;scpt<=nbprop;scpt++){
 					$("#question"+cptprop+"proposition"+scpt).val(contenuproposition[indextab]);
 					indextab++;
 				}
+				
+			//Les types des questions
+	
+			for(var cptbis = 0;cptbis<itotal;cptbis++){
+		   		$("#typequestion"+cptbis).val(questiontype[cptbis]);
 			}
 
-			//Les types des questions
-			if(i>1){
-				for(var cptbis = 1;cptbis<itotal;cptbis++){
-			   		$("#typequestion"+cptbis).val(questiontype[cptbis]);
-				}
+				compteur ++;
 			}
-			compteur ++;
 		    ip = 0;
 		});
 	});
@@ -443,10 +426,10 @@ mysql_query("SET NAMES UTF8");
 					indextab++;
 				}
 				
-			//Les types des questions
-			for(var cptbis = 1;cptbis<=itotal;cptbis++){
-		   		$("#typequestion"+cptbis).val(questiontype[cptbis]);
-			}
+				//Les types des questions
+				for(var cptbis = 1;cptbis<=itotal;cptbis++){
+			   		$("#typequestion"+cptbis).val(questiontype[cptbis]);
+				}
 
 				compteur ++;
 			}
@@ -498,11 +481,11 @@ mysql_query("SET NAMES UTF8");
 	</script>
 <BODY>
 	 
-		 <div id="title">Create your e-Test </div>
-
-		 <div id="create"><h1><font color="white"> Questions : </font></h1>
-			 <div id='questions'></div><br/><br/>
-		 </div>
+	 <div id="title">Create your e-Test </div>
+	 <div id="create">
+	 	<h1><font color="white"> Questions : </font></h1>
+		<div id='questions'></div><br/><br/>
+	 </div>
 
 		 <div id='boutons'><button type='button' class="btn btn-info" id='nouveauInput' style='height:30px; width:160px'/>Add a question <span class="glyphicon glyphicon-plus"></span></button><br/> <br/>
 		 <div id="create">
@@ -512,9 +495,9 @@ mysql_query("SET NAMES UTF8");
 		 <div id='boutons'><button type='button' class="btn btn-primary" id='nouveauMail' style='height:30px; width:160px'/>Add a student mail <span class="glyphicon glyphicon-envelope"></span></button></div>
 
 		 <div id='check'>
-		 	<button type='button' class="btn btn-warning" id='verify' style='height:45px; width:160px'/> Check your e-test <span class="glyphicon glyphicon-search"></span></button><br/>
-			<button type='button' class="btn btn-success" id='valider' style='height:45px; width:160px'> Done <span class="glyphicon glyphicon-ok"></span></button><br/>
-			<button type="button" class="btn btn-danger btn-lg" onclick="self.location.href='index.php'" style='height:45px; width:160px'>Back to menu <span class="glyphicon glyphicon-home"></span></button>
+		 	<button type='button' class="btn btn-warning" id='verify' style='height:45px; width:200px'/> Check your e-test <span class="glyphicon glyphicon-search"></span></button><br/>
+			<button type='button' class="btn btn-success" id='valider' style='height:45px; width:200px'> Done <span class="glyphicon glyphicon-ok"></span></button><br/>
+			<button type="button" class="btn btn-danger btn-lg" onclick="self.location.href='index.php'" style='height:45px; width:200px'>Back to menu <span class="glyphicon glyphicon-home"></span></button>
 		</div>
 		<div id='final'></div>
 
@@ -536,13 +519,12 @@ mysql_query("SET NAMES UTF8");
 				$req = mysql_query("SELECT Mail FROM Form WHERE Token = '".$token."'") or exit(mysql_error());
 				list($listmail)=mysql_fetch_row($req); 
 				$tabmail = explode(" | ", $listmail);
-				for($i = 1; $i < count($tabmail); $i++)
-				{
+				for($i = 1; $i < count($tabmail); $i++){
 					if($i == count($tabmail)-1){
 						$to = $to.$tabmail[$i];
 					}
 					else{
-					$to = $to.$tabmail[$i].", ";
+						$to = $to.$tabmail[$i].", ";
 					}
 				}
 				$textmail = "The user ".$tabmail[0]." has created a test ! \n You can access to this test on our website by using your token and your mail account \n Token : ".$token;
