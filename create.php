@@ -716,16 +716,16 @@ mysql_query("SET NAMES UTF8");
 					if($i == count($tabmail)-1)
 					{
 						$to = $to.$tabmail[$i];
-						$toname = $toname." ".$tabnameform[$i]." : ".$tabmail[$i]." \n";
+						$toname = $toname." ".$tabnameform[$i]." : ".$tabmail[$i]."/";
 					}
 					else
 					{
 						$to = $to.$tabmail[$i].", ";
-						$toname = $toname." ".$tabnameform[$i]." : ".$tabmail[$i]." \n";
+						$toname = $toname." ".$tabnameform[$i]." : ".$tabmail[$i]." /";
 					}
 				}
 				
-				$textmail = "The user ".$tabnameform[0]." has created a test ! \n You can access to this test on our website by using your token and your mail account \n Token : ".$token;
+				$textmail = "The user ".$tabnameform[0]." has created a test ! \n You can access to this test on our website by using your token and your mail account \n Token : ".$token."\n http://etestingproject.hostoi.com";
 				$textmailteacher = "You can access it by using your token \n Token : ".$token." \n The test has been sent to : ".$toname;
 				mail($to, 'Someone has created a test !', $textmail);
 				mail($tabmail[0], 'Your test is created !', $textmailteacher);

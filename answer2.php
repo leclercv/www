@@ -19,6 +19,22 @@
 			<?php
 			if (isset($_SESSION['token']) && isset($_SESSION['mail'])){
 				$token = $_SESSION['token'];
+				$nameuser = "";
+				$req = mysql_query("SELECT Mail FROM Form WHERE Token = '".$token."'") or exit(mysql_error());
+				list($listmail)=mysql_fetch_row($req); 
+				$req = mysql_query("SELECT Name FROM Form WHERE Token = '".$token."'") or exit(mysql_error());
+				list($listname)=mysql_fetch_row($req); 
+				$tabname = explode(" | ", $listname);
+				$tabmail = explode(" | ", $listmail);
+				$_SESSION['teacher'] = $tabname[0];
+				for($h = 0; $h < count($tabmail); $h++)
+				{
+					if($_SESSION['mail'] == $tabmail[$h])
+					{
+						$user = $tabname[$h];
+					}
+				}
+				echo "<h3>Hello ".$user.", have a nice test !</h3>";
 				$multrep = "";
 				$question = "";
 				$answer = "";
@@ -89,10 +105,7 @@
 						}
 					}
 					$listmail = "";
-					$hasansw = "The user ".$_SESSION['mail']." "."has answered your test ! Here are his answers : \n".$hasansw;
-					$req = mysql_query("SELECT Mail FROM Form WHERE Token = '".$token."'") or exit(mysql_error());
-					list($listmail)=mysql_fetch_row($req); 
-					$tabmail = explode(" | ", $listmail);
+					$hasansw = "The user ".$user." "."has answered your test ! Here are his answers : \n".$hasansw;
 					mail($tabmail[0], 'Someone has answered your test !', $hasansw);
 					$_SESSION['tmail'] = $tabmail[0];
 					echo "<script type='text/javascript'>document.location.replace('answer3.php');</script>";

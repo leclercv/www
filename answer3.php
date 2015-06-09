@@ -14,7 +14,7 @@ session_start();
 			<?php
 			if(isset($_SESSION['tmail']))
 			{
-				echo '<h3>You have sucessfully answered this test ! <br/> Your answers has been sent to : '.$_SESSION['tmail'].'<br>Thank you !</h3><br>';
+				echo '<h3>You have sucessfully answered this test ! <br/> Your answers has been sent to : '.$_SESSION['teacher'].' at this adrress : '.$_SESSION['tmail'].'<br>Thank you !</h3><br>';
 			}
 			?>
 			<button type="button" class="btn btn-danger btn-lg" onclick="self.location.href='index.php'"onclick>Back to menu <span class="glyphicon glyphicon-home"></span></button>
