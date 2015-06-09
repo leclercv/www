@@ -29,17 +29,26 @@ mysql_query("SET NAMES UTF8");
 			            $token=$_POST['key'];
 			            $_SESSION['token'] = $token;
 			            $_SESSION['mail'] = $mail;
-			            $req = mysql_query("SELECT Token FROM Form WHERE Token = '" . $token . "'") or exit(mysql_error());
-						if (mysql_num_rows($req) == 1)// Vérification du Token
+			            $numail = 0;
+			            $req = mysql_query("SELECT Token FROM Form WHERE Token LIKE '%".$token."%'") or exit(mysql_error());
+						list($listtoken)=mysql_fetch_row($req); 
+						$tabtoken = explode(" | ", $listtoken);
+						$req = mysql_query("SELECT Mail FROM Form WHERE Token LIKE '%".$token."%'") or exit(mysql_error());
+						list($listmail)=mysql_fetch_row($req); 
+						$tabmail = explode(" | ", $listmail);
+						for($i = 0; $i < count($tabmail); $i++)
 						{
-							$req = mysql_query("SELECT Mail FROM Form WHERE Token = '".$token."'") or exit(mysql_error());
-							list($mailconf)=mysql_fetch_row($req); 
-							if(strstr($mailconf,$mail)) //Vérification du mail
+							if($mail == $tabmail[$i])
 							{
-								echo "<script type='text/javascript'>document.location.replace('answer2.php');</script>";
+								$numail = $i;
 							}
-						}			            
-			        }
+						}
+						if($tabtoken[$numail] == $token) //Vérification du mail
+						{
+								echo "<script type='text/javascript'>document.location.replace('answer2.php');</script>";
+						}
+					}			            
+			        
 		    	?>
 		    	
 		        <center>

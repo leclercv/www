@@ -20,9 +20,9 @@
 			if (isset($_SESSION['token']) && isset($_SESSION['mail'])){
 				$token = $_SESSION['token'];
 				$nameuser = "";
-				$req = mysql_query("SELECT Mail FROM Form WHERE Token = '".$token."'") or exit(mysql_error());
+				$req = mysql_query("SELECT Mail FROM Form WHERE Token LIKE '%".$token."%'") or exit(mysql_error());
 				list($listmail)=mysql_fetch_row($req); 
-				$req = mysql_query("SELECT Name FROM Form WHERE Token = '".$token."'") or exit(mysql_error());
+				$req = mysql_query("SELECT Name FROM Form WHERE Token LIKE '%".$token."%'") or exit(mysql_error());
 				list($listname)=mysql_fetch_row($req); 
 				$tabname = explode(" | ", $listname);
 				$tabmail = explode(" | ", $listmail);
@@ -40,11 +40,11 @@
 				$answer = "";
 				$hasansw = "";
 				$videoimage = "";
-				$req = mysql_query("SELECT Question FROM Form WHERE Token = '".$token."'") or exit(mysql_error());
+				$req = mysql_query("SELECT Question FROM Form WHERE Token LIKE '%".$token."%'") or exit(mysql_error());
 				list($question)=mysql_fetch_row($req); 
-				$req = mysql_query("SELECT Answer FROM Form WHERE Token = '".$token."'") or exit(mysql_error());
+				$req = mysql_query("SELECT Answer FROM Form WHERE Token LIKE '%".$token."%'") or exit(mysql_error());
 				list($answer)=mysql_fetch_row($req); 
-				$req = mysql_query("SELECT GAnswer FROM Form WHERE Token = '".$token."'") or exit(mysql_error());
+				$req = mysql_query("SELECT GAnswer FROM Form WHERE Token LIKE '%".$token."%'") or exit(mysql_error());
 				list($videoimage)=mysql_fetch_row($req); 
 				$tabquest = explode(" | ", $question);
 				$tabansw = explode(" | ", $answer);

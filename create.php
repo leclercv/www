@@ -705,32 +705,29 @@ mysql_query("SET NAMES UTF8");
 				$listnameform = $tabrep[4];
 				$token = microtime(true);
 				$token = md5($token);
-				$sql = 'INSERT INTO Form VALUES ("'.$token.'", "'.$reponse.'", "'.$vidimage.'", "'.$mail.'", "'.$question.'", "'.$listnameform.'")';
-				mysql_query ($sql) or die ('Erreur SQL !'.$sql.'<br />'.mysql_error());
-				$req = mysql_query("SELECT Mail FROM Form WHERE Token = '".$token."'") or exit(mysql_error());
-				list($listmail)=mysql_fetch_row($req); 
-				$tabmail = explode(" | ", $listmail);
+				$_SESSION['tok'] = $token;
+				$tokentemp = "";
+				$tabmail = explode(" | ", $mail);
 				$tabnameform = explode(" | ", $listnameform);
 				for($i = 1; $i < count($tabmail); $i++)
 				{
-					if($i == count($tabmail)-1)
-					{
-						$to = $to.$tabmail[$i];
 						$toname = $toname." ".$tabnameform[$i]." : ".$tabmail[$i]."/";
-					}
-					else
-					{
-						$to = $to.$tabmail[$i].", ";
-						$toname = $toname." ".$tabnameform[$i]." : ".$tabmail[$i]." /";
-					}
 				}
-				
-				$textmail = "The user ".$tabnameform[0]." has created a test ! \n You can access to this test on our website by using your token and your mail account \n Token : ".$token."\n http://etestingproject.hostoi.com";
+					
 				$textmailteacher = "You can access it by using your token \n Token : ".$token." \n The test has been sent to : ".$toname;
-				mail($to, 'Someone has created a test !', $textmail);
 				mail($tabmail[0], 'Your test is created !', $textmailteacher);
+				for($i = 1; $i < count($tabmail); $i++)
+				{
+				$tokentemp = microtime(true);
+				$tokentemp = md5($tokentemp);
+				echo $tokentemp;
+				$textmail = "The user ".$tabnameform[0]." has created a test ! \n You can access to this test on our website by using your token and your mail account \n Token : ".$tokentemp."\n http://etestingproject.hostoi.com";
+				mail($tabmail[$i], 'Your teacher has created a test!', $textmail);
+				$token = $token." | ".$tokentemp;
+				echo $token;
+				}
+				$sql = mysql_query('INSERT INTO Form VALUES ("'.$token.'", "'.$reponse.'", "'.$vidimage.'", "'.$mail.'", "'.$question.'", "'.$listnameform.'")') or exit(mysql_error());
 				$_SESSION['to'] = $toname;
-				$_SESSION['tok'] = $token;
 				echo "<script type='text/javascript'>document.location.replace('create2.php');</script>";
 			}
 		?>
