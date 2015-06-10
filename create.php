@@ -677,10 +677,10 @@ mysql_query("SET NAMES UTF8");
 
 		 <div id='boutons'><button type='button' class="btn btn-info" id='nouveauInput' style='height:30px; width:160px'/>Add a question <span class="glyphicon glyphicon-plus"></span></button><br/> <br/>
 		 <div id="create">
-		 	 <h1> <font color="white">Mails : </font></h1>
+		 	 <h1> <font color="white">Mails : </font></h1><br/>
+		 	 <div id='boutons'><button type='button' class="btn btn-primary" id='nouveauMail' style='height:30px; width:160px'/>Add a student mail <span class="glyphicon glyphicon-envelope"></span></button></div><br/>
 			 <div id='mails'><font color='white'>Teacher  </font> <input type='text' name='teachermail' id='teachermail' placeholder='Enter your mail address here' value='' size=25/> <input type='text' name='teachername' id='teachername' placeholder='Enter your name here' value='' size=20/><br/></div><br/><br/>
 	    </div>
-		 <div id='boutons'><button type='button' class="btn btn-primary" id='nouveauMail' style='height:30px; width:160px'/>Add a student mail <span class="glyphicon glyphicon-envelope"></span></button></div>
 
 		 <div id='check'>
 		 	<button type='button' class="btn btn-warning" id='verify' style='height:45px; width:200px'/> Check your e-test <span class="glyphicon glyphicon-search"></span></button><br/>
