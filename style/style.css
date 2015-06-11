@@ -5,11 +5,20 @@
  text-align: center;
 }
 
+#subtitle {
+ color: white;
+ font-family: 'geometria_lightlight';
+ font-size: 22px;
+ text-align: center;
+}
+
 #titleabout {
  color: white;
  font-family: 'geometria_lightlight';
  font-size: 70px;
  text-align: left;
+  margin-left:100px;
+
 }
 
 #texte {
@@ -24,6 +33,9 @@
  font-family: 'geometria_lightlight';
  font-size: 15px;
  text-align: justify;
+ margin-left:100px;
+ margin-right:200px;
+
 }
 
 body {
@@ -31,6 +43,14 @@ background-color:grey;
 }
 
 #about {
+ font-family: "Times New Roman", Georgia, Serif;
+ font-size: 25px;
+ position: absolute;
+ bottom: 60px;
+ right: 20px;
+}
+
+#what {
  font-family: "Times New Roman", Georgia, Serif;
  font-size: 25px;
  position: absolute;
@@ -48,6 +68,12 @@ background-color:grey;
  position: absolute;
  bottom :10px;
  left: 400px;
+}
+
+#chrome{
+ position: absolute;
+ bottom :20px;
+ left: 640px;
 }
 
 #bouton {

@@ -167,7 +167,6 @@ mysql_query("SET NAMES UTF8");
 				resultatsafe = resultatsafe.split("|").join(" ");
 
 				resultat = resultat + resultatsafe + " | ";
-
 			}
 
 			var compteur = 0;
@@ -218,7 +217,6 @@ mysql_query("SET NAMES UTF8");
 			}
 
 			resultatmediafinal = resultatmedia.substring(0, resultatmedia.length-3);
-
 
 			//Gestion des erreurs
 			var messagerrorfinal ="";
@@ -428,6 +426,7 @@ mysql_query("SET NAMES UTF8");
 					$("#question"+cptprop+"proposition"+scpt).val(contenuproposition[indextab]);
 					indextab++;
 				}
+			}
 				
 			//Les types des questions
 			for(var cptbis = 0;cptbis<itotal;cptbis++){
@@ -440,92 +439,90 @@ mysql_query("SET NAMES UTF8");
 			}
 
 				compteur ++;
-			}
 		    ip = 0;
 		});
 	});
 
-		function nouveauProposition (i){
-			ip++;
-			var numproposition = questions[i-1].toString().split("Proposition").length-2;
-		    questions[i-1] = questions[i-1] + "<font color='white'>Proposition   "+numproposition+"   </font><input type='text' name='proposition"+ip+"' id='question"+i+"proposition"+numproposition+"'value=''size=40 maxlength=50/><br/>";
+	function nouveauProposition (i){
+		ip++;
+		var numproposition = questions[i-1].toString().split("Proposition").length-2;
+		questions[i-1] = questions[i-1] + "<font color='white'>Proposition   "+numproposition+"   </font><input type='text' name='proposition"+ip+"' id='question"+i+"proposition"+numproposition+"' value='' size=40 maxlength=50/><br/>";
 
-			//Sauvegarder les valeurs des inputs : 
+		//Sauvegarder les valeurs des inputs : 
 
-			//Les questions
-			var contenuquestion = new Array;
+		//Les questions
+		var contenuquestion = new Array;
 
-			for(var cptbis = 1;cptbis<=itotal;cptbis++){
-		   		contenuquestion[cptbis] = $("#question"+cptbis).val();
+		for(var cptbis = 1;cptbis<=itotal;cptbis++){
+		   	contenuquestion[cptbis] = $("#question"+cptbis).val();
+		}
+
+		//Les Propositions
+		contenuproposition = new Array;
+		var indextab = 0;
+		var compteur = 0;
+
+		for(var cptprop =1;cptprop<=itotal;cptprop++){
+			nbprop = questions[compteur].toString().split("Proposition").length-2;
+			for(var scpt =1;scpt<=nbprop;scpt++){
+				contenuproposition[indextab] = $("#question"+cptprop+"proposition"+scpt).val();
+				indextab++;
 			}
+			compteur ++;
+		}
 
-			//Les Propositions
-			contenuproposition = new Array;
-			var indextab = 0;
-			var compteur = 0;
+		//Les types des questions
+		questiontype = new Array;
 
-			for(var cptprop =1;cptprop<=itotal;cptprop++){
-				nbprop = questions[compteur].toString().split("Proposition").length-2;
-				for(var scpt =1;scpt<=nbprop;scpt++){
-					contenuproposition[indextab] = $("#question"+cptprop+"proposition"+scpt).val();
-					indextab++;
-				}
-				compteur ++;
+		for(var cptbis = 0;cptbis<=itotal;cptbis++){
+	  		questiontype[cptbis] = $("#typequestion"+cptbis).val();
+		}
+
+		//les medias
+		allmedia = new Array;
+
+		for(var cptbisbrouk = 0;cptbisbrouk<=itotal;cptbisbrouk++){
+	   		allmedia[cptbisbrouk] = $("#media"+cptbisbrouk).val();
+		}		
+
+		document.getElementById('questions').innerHTML = questions;
+
+		//Remettre les valeurs des inputs
+
+	    //Les questions
+		for(var cptbis = 0;cptbis<=itotal;cptbis++){
+  			$("#question"+cptbis).val(contenuquestion[cptbis]);
+		}
+
+		//Les propositions
+		var indextab = 0;
+		var compteur = 0;
+
+		for(var cptprop =1;cptprop<=itotal;cptprop++){
+			nbprop = questions[compteur].toString().split("Proposition").length-2;
+			for(var scpt =1;scpt<=nbprop;scpt++){
+				$("#question"+cptprop+"proposition"+scpt).val(contenuproposition[indextab]);
+				indextab++;
 			}
-
-			//Les types des questions
-			questiontype = new Array;
-
-			for(var cptbis = 0;cptbis<=itotal;cptbis++){
-		   		questiontype[cptbis] = $("#typequestion"+cptbis).val();
-			}
-
-			//les medias
-			allmedia = new Array;
-
-			for(var cptbisbrouk = 0;cptbisbrouk<=itotal;cptbisbrouk++){
-		   		allmedia[cptbisbrouk] = $("#media"+cptbisbrouk).val();
-			}		
-
-			document.getElementById('questions').innerHTML = questions;
-
-			//Remettre les valeurs des inputs
-
-		    //Les questions
-			for(var cptbis = 0;cptbis<=itotal;cptbis++){
-	   			$("#question"+cptbis).val(contenuquestion[cptbis]);
-			}
-
-			//Les propositions
-			var indextab = 0;
-			var compteur = 0;
-
-			for(var cptprop =1;cptprop<=itotal;cptprop++){
-					nbprop = questions[compteur].toString().split("Proposition").length-2;
-					for(var scpt =1;scpt<=nbprop;scpt++){
-						$("#question"+cptprop+"proposition"+scpt).val(contenuproposition[indextab]);
-						indextab++;
-					}
+		}
 					
-				//Les types des questions
-				for(var cptbis = 1;cptbis<=itotal;cptbis++){
-			   		$("#typequestion"+cptbis).val(questiontype[cptbis]);
-				}
+		//Les types des questions
+		for(var cptbis = 1;cptbis<=itotal;cptbis++){
+	  		$("#typequestion"+cptbis).val(questiontype[cptbis]);
+	  	}
 
-				//les medias
-				for(var cptbisbrouk = 0;cptbisbrouk<=itotal;cptbisbrouk++){
-			   		$("#media"+cptbisbrouk).val(allmedia[cptbisbrouk]);
-				}
-				compteur ++;
-			}
-
-		}	
+		//les medias
+		for(var cptbisbrouk = 0;cptbisbrouk<=itotal;cptbisbrouk++){
+	  		$("#media"+cptbisbrouk).val(allmedia[cptbisbrouk]);
+		}
+		compteur ++;
 
 		var nbmail = 0;
 
 		for(var cpt = 1;cpt<=1000;cpt++){
 			mediabool[cpt-1] = true;
 		}
+	}
 
 		function nouveaumedia (i){
 			if(mediabool[i-1]==true){
@@ -590,6 +587,7 @@ mysql_query("SET NAMES UTF8");
 					$("#question"+cptprop+"proposition"+scpt).val(contenuproposition[indextab]);
 					indextab++;
 				}
+			}
 				
 				//Les types des questions
 				for(var cptbis = 1;cptbis<=itotal;cptbis++){
@@ -604,10 +602,6 @@ mysql_query("SET NAMES UTF8");
 
 				compteur ++;
 			}
-		}
-
-
-
 
 		$(function(){
 			$("#nouveauMail").click(function(){   
@@ -711,7 +705,7 @@ mysql_query("SET NAMES UTF8");
 				$tabnameform = explode(" | ", $listnameform);
 				for($i = 1; $i < count($tabmail); $i++)
 				{
-						$toname = $toname." ".$tabnameform[$i]." : ".$tabmail[$i]."/";
+					$toname = $toname." ".$tabnameform[$i]." : ".$tabmail[$i]."/";
 				}
 					
 				$textmailteacher = "You can access it by using your token \n Token : ".$token." \n The test has been sent to : ".$toname;
