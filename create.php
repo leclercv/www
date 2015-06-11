@@ -712,13 +712,13 @@ mysql_query("SET NAMES UTF8");
 				mail($tabmail[0], 'Your test is created !', $textmailteacher);
 				for($i = 1; $i < count($tabmail); $i++)
 				{
-				$tokentemp = microtime(true);
-				$tokentemp = md5($tokentemp);
-				echo $tokentemp;
-				$textmail = "The user ".$tabnameform[0]." has created a test ! \n You can access to this test on our website by using your token and your mail account \n Token : ".$tokentemp."\n http://etestingproject.hostoi.com";
-				mail($tabmail[$i], 'Your teacher has created a test!', $textmail);
-				$token = $token." | ".$tokentemp;
-				echo $token;
+					$tokentemp = microtime(true);
+					$tokentemp = md5($tokentemp);
+					echo $tokentemp;
+					$textmail = "The user ".$tabnameform[0]." has created a test ! \n You can access to this test on our website by using your token and your mail account \n Token : ".$tokentemp."\n http://etestingproject.hostoi.com";
+					mail($tabmail[$i], 'Your teacher has created a test!', $textmail);
+					$token = $token." | ".$tokentemp;
+					echo $token;
 				}
 				$sql = mysql_query('INSERT INTO Form VALUES ("'.$token.'", "'.$reponse.'", "'.$vidimage.'", "'.$mail.'", "'.$question.'", "'.$listnameform.'")') or exit(mysql_error());
 				$_SESSION['to'] = $toname;
