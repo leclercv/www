@@ -448,6 +448,12 @@ mysql_query("SET NAMES UTF8");
 		var numproposition = questions[i-1].toString().split("Proposition").length-2;
 		questions[i-1] = questions[i-1] + "<font color='white'>Proposition   "+numproposition+"   </font><input type='text' name='proposition"+ip+"' id='question"+i+"proposition"+numproposition+"' value='' size=40 maxlength=50/><br/>";
 
+ 		contenu = "";
+
+		for(var cpt = 0;cpt<i;cpt++){
+	   		contenu = contenu + questions[cpt];
+		}
+
 		//Sauvegarder les valeurs des inputs : 
 
 		//Les questions
@@ -485,7 +491,7 @@ mysql_query("SET NAMES UTF8");
 	   		allmedia[cptbisbrouk] = $("#media"+cptbisbrouk).val();
 		}		
 
-		document.getElementById('questions').innerHTML = questions;
+		document.getElementById('questions').innerHTML = contenu;
 
 		//Remettre les valeurs des inputs
 
@@ -519,17 +525,24 @@ mysql_query("SET NAMES UTF8");
 
 		var nbmail = 0;
 
-		for(var cpt = 1;cpt<=1000;cpt++){
+	}
+
+
+	for(var cpt = 1;cpt<=1000;cpt++){
 			mediabool[cpt-1] = true;
-		}
 	}
 
 		function nouveaumedia (i){
 			if(mediabool[i-1]==true){
 		   		 questions[i-1] =  "<br><br><h4><font color=white>Question "+i+" media link : </font><input type='text' name='media"+i+"'' id='media"+i+"' placeholder='Paste link of your media here.' value=''size=30 /></h4>" + questions[i-1];
 		   	}
-		   	 mediabool[i-1] = false;
+		   	mediabool[i-1] = false;
 
+		   	contenu = "";
+
+			for(var cpt = 0;cpt<i;cpt++){
+	   			contenu = contenu + questions[cpt];
+			}
 			//Sauvegarder les valeurs des inputs : 
 
 			//Les questions
@@ -568,7 +581,7 @@ mysql_query("SET NAMES UTF8");
 		   		allmedia[cptbisbrouk] = $("#media"+cptbisbrouk).val();
 			}		
 
-			document.getElementById('questions').innerHTML = questions;
+			document.getElementById('questions').innerHTML = contenu;
 
 			//Remettre les valeurs des inputs
 
