@@ -337,7 +337,10 @@ mysql_query("SET NAMES UTF8");
 
 			messagerrorfinal = cpterror + " error(s) have been detected : \n" + messagerrortype + messagerrortitle + messagerrorprop + "\n" + messagerrormail + messagerrorname;
 
-			if(cpterror==0){
+			if(i == 0){
+				alert("Your test must have at least one question !");
+				
+			}else if(cpterror==0){
 				resultatfinal = resultatfinal.split("~").join(" ");
 				resultatrepfinal =  resultatrepfinal.split("~").join(" ");
 
