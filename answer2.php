@@ -54,7 +54,14 @@
 					echo "<h1>".substr($tabquest[$i], 1)."</h1>";
 					if($tabvideoimage[$i] != "!" && strstr($tabvideoimage[$i],"youtube"))
 					{
+						if(substr($tabvideoimage[$i], 0, 5) == "https")
+						{
 						echo "<br> <iframe width=\"420\" height=\"315\" src=\"https://www.youtube.com/embed/".substr($tabvideoimage[$i], 32)."\" frameborder=\"0\" allowfullscreen></iframe><br>";
+						}
+						if(substr($tabvideoimage[$i], 0, 5) == "http:")
+						{
+						echo "<br> <iframe width=\"420\" height=\"315\" src=\"https://www.youtube.com/embed/".substr($tabvideoimage[$i], 31)."\" frameborder=\"0\" allowfullscreen></iframe><br>";
+						}
 					}
 					if($tabvideoimage[$i] != "!" && !(strstr($tabvideoimage[$i],"youtube")))
 					{
@@ -62,18 +69,21 @@
 					}
 					if($tabquest[$i]{0} == 1){
 						$tabanswcourant = explode(" _ ", $tabansw[$i]);
-							for($a = 0; $a < count($tabanswcourant); $a++){
-								echo '   <input type="checkbox" name="'.$i.'cansw'.$a.'" value=" '.$tabanswcourant[$a].'">'.$tabanswcourant[$a].' 	   ';
+							for($a = 0; $a < count($tabanswcourant); $a++)
+							{
+								echo '<input type="checkbox" name="'.$i.'cansw'.$a.'" value=" '.$tabanswcourant[$a].'">'.$tabanswcourant[$a]."&nbsp;&nbsp;";
 							}
 					}
 					if($tabquest[$i]{0} == 0){
 						$tabanswcourant = explode(" _ ", $tabansw[$i]);
 							for($a = 0; $a < count($tabanswcourant); $a++){
-								if($a == 0){
-									echo '   <input type="radio" name="ransw'.$i.'" value=" '.$tabanswcourant[$a].'">'.$tabanswcourant[$a].'  	  ';
+								if($a == 0)
+								{
+									echo '<input type="radio" name="ransw'.$i.'" value=" '.$tabanswcourant[$a].'">'.$tabanswcourant[$a]."&nbsp;&nbsp;";
 								}
-								else{
-									echo '   <input type="radio" name="ransw'.$i.'" value=" '.$tabanswcourant[$a].'">'.$tabanswcourant[$a].'    	';
+								else
+								{
+									echo '<input type="radio" name="ransw'.$i.'" value=" '.$tabanswcourant[$a].'">'.$tabanswcourant[$a]."&nbsp;&nbsp;";
 								}
 							}
 					}

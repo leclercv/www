@@ -19,23 +19,66 @@ mysql_query("SET NAMES UTF8");
 		 <div class="input-group">
 
 			<form name="validation" method="post">
-
+				<div>
 				<input type="text"class="form-control" placeholder="Mail" aria-describedby="basic-addon1" name="mail"/>
 		       	<input type="text" class="form-control" placeholder="Token" aria-describedby="basic-addon1" name="key"/>
+		       </div>
 				<?php
 			        if(isset($_POST['valider'])){
 			        	$mailconf = "";
 			            $mail=$_POST['mail'];
+			            $haserr = false;
+			            if (!preg_match('#^[\w.-]+@[\w.-]+\.[a-z]{2,6}$#i', $mail)) 
+			            {
+			            echo '<br><div class="alert alert-danger" role="alert">
+						  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+						  <span class="sr-only">Error:</span>
+						  Enter a valid mail address.
+						</div>';
+						$haserr = true;
+						}
 			            $token=$_POST['key'];
-			            $_SESSION['token'] = $token;
-			            $_SESSION['mail'] = $mail;
 			            $numail = 0;
 			            $req = mysql_query("SELECT Token FROM Form WHERE Token LIKE '%".$token."%'") or exit(mysql_error());
 						list($listtoken)=mysql_fetch_row($req); 
 						$tabtoken = explode(" | ", $listtoken);
-						$req = mysql_query("SELECT Mail FROM Form WHERE Token LIKE '%".$token."%'") or exit(mysql_error());
-						list($listmail)=mysql_fetch_row($req); 
+						$booltok = true;
+						$boolmail = true;
+						for($a = 0; $a < count($tabtoken); $a++)
+						{
+							if($tabtoken[$a] == $token)
+							{
+								$booltok = false;
+							}
+						}
+						if(((!mysql_num_rows($req)) || ($booltok == true)) && ($haserr == false))
+			            { 
+						echo '<div class="alert alert-danger" role="alert">
+						  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+						  <span class="sr-only">Error:</span>
+						  Token not found.
+						</div>';
+						$haserr = true;
+			            }
+						$req2 = mysql_query("SELECT Mail FROM Form WHERE Token LIKE '%".$token."%'") or exit(mysql_error());
+						list($listmail)=mysql_fetch_row($req2); 
 						$tabmail = explode(" | ", $listmail);
+						for($a = 0; $a < count($tabmail); $a++)
+						{
+							if($tabmail[$a] == $mail)
+							{
+								$boolmail = false;
+							}
+						}
+						if(((!mysql_num_rows($req2)) || ($boolmail == true)) && ($haserr == false))
+						{
+						echo '<div class="alert alert-danger" role="alert">
+						  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+						  <span class="sr-only">Error:</span>
+						  Mail not found for this token.
+						</div>';
+							$haserr = true;
+						}
 						for($i = 0; $i < count($tabmail); $i++)
 						{
 							if($mail == $tabmail[$i])
@@ -43,11 +86,22 @@ mysql_query("SET NAMES UTF8");
 								$numail = $i;
 							}
 						}
-						if($tabtoken[$numail] == $token) //Vérification du mail
+						if(($tabtoken[$numail] == $token) && ($mail == $tabmail[$numail])) //Vérification du mail
 						{
-								echo "<script type='text/javascript'>document.location.replace('answer2.php');</script>";
+						$_SESSION['token'] = $token;
+			            $_SESSION['mail'] = $mail;
+						echo "<script type='text/javascript'>document.location.replace('answer2.php');</script>";
 						}
-					}			            
+						if(($tabtoken[$numail] != $token) && ($booltok == false) && ($haserr == false))
+						{
+						echo '<div class="alert alert-danger" role="alert">
+						  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+						  <span class="sr-only">Error:</span>
+						  The token and the mail address don\'t match.
+						</div>';
+						$haserr = true;
+						}
+					}		            
 			        
 		    	?>
 		    	
