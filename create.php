@@ -15,6 +15,7 @@ mysql_query("SET NAMES UTF8");
 	<script type="text/javascript">
 
 	questions = new Array;
+	questionsprop = new Array;
 	mails = new Array;
 	mailsname = new Array;
 	media = new Array;
@@ -112,7 +113,7 @@ mysql_query("SET NAMES UTF8");
      		}
 
 		    //mail eleves
-		    for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+		    for(var cptbis = 1;cptbis<=mails.length;cptbis++){
 		       	emailaddressVal =  	$("#studentmail"+cptbis).val();
 		  		if(emailaddressVal == '') {
 		           	messagerrormail = messagerrormail + "The mail address field of student "+cptbis+" is empty \n";
@@ -124,7 +125,7 @@ mysql_query("SET NAMES UTF8");
 			}
 
 			//name eleve
-			for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+			for(var cptbis = 1;cptbis<=mails.length;cptbis++){
      			var nameVal = $("#studentname"+cptbis).val();
  
 			    if(nameVal == ''){
@@ -174,8 +175,7 @@ mysql_query("SET NAMES UTF8");
 			//Les propositions
 
 			for(var cptprop =1;cptprop<=i;cptprop++){
-				nbprop = questions[compteur].toString().split("Proposition").length-3;
-				for(var scpt =1;scpt<=nbprop;scpt++){
+				for(var scpt =1;scpt<=questionsprop[cptprop];scpt++){
 					resultatrepsafe = $("#question"+cptprop+"proposition"+scpt).val()
 					resultatrepsafe = resultatrepsafe.split("~").join(" ");
 					resultatrepsafe = resultatrepsafe.split("_").join(" ");
@@ -195,7 +195,7 @@ mysql_query("SET NAMES UTF8");
 
 			listemail = $("#teachermail").val();
 
-			for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+			for(var cptbis = 1;cptbis<=mails.length;cptbis++){
 		   		listemail = listemail + " | " +$("#studentmail"+cptbis).val();
 			}
 
@@ -203,7 +203,7 @@ mysql_query("SET NAMES UTF8");
 
 			listename = $("#teachername").val();
 
-			for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+			for(var cptbis = 1;cptbis<=mails.length;cptbis++){
 		   		listename = listename + " | " +$("#studentname"+cptbis).val();
 			}
 
@@ -312,7 +312,7 @@ mysql_query("SET NAMES UTF8");
      		}
 
 		    //mail eleves
-		    for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+		    for(var cptbis = 1;cptbis<=mails.length;cptbis++){
 		       	emailaddressVal =  	$("#studentmail"+cptbis).val();
 		  		if(emailaddressVal == '') {
 		           	messagerrormail = messagerrormail + "The mail address field of student "+cptbis+" is empty \n";
@@ -324,7 +324,7 @@ mysql_query("SET NAMES UTF8");
 			}
 
 			//name eleve
-			for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+			for(var cptbis = 1;cptbis<=mails.length;cptbis++){
      			var nameVal = $("#studentname"+cptbis).val();
  
 			    if(nameVal == ''){
@@ -343,6 +343,7 @@ mysql_query("SET NAMES UTF8");
 
 				var reponse = resultatfinal + " ~ " + resultatrepfinal + " ~ " + listemail + " ~ " + resultatmediafinal + " ~ " + listename;
 				reponse = reponse.split("'").join("&#8217;");
+				reponse = reponse.split("\"").join("&#8220;");
 
 				//alert("Questions : " +resultatfinal  + " \n \n Réponses : " + resultatrepfinal + " \n \n Mails : " + listemail + " \n \n Media : " + resultatmediafinal + "\n \n Names : " + listename );
 				document.getElementById('final').innerHTML = "<form method='post' id='formulaire'><input type='hidden' name='validation' value='"+reponse+"'/></form>";
@@ -357,12 +358,13 @@ mysql_query("SET NAMES UTF8");
 	$(function(){
 		$("#nouveauInput").click(function(){
 			i++;
-			itotal = i;
 		    questions.push("<h3><font color='white'>Question "+i+" title : </font></h3><input type='text' name='question"+i+"'id='question"+i+"'value='' size=50 maxlength=80/><input type='button' class='btn btn-primary' id='nouveaumedia"+i+"' onclick='nouveaumedia("+i+")' value='Add a media' style='height:28px; width:110px; font-family:Arial;'/><br><div id='media"+i+"'></div><br><br><input type='button' class='btn btn-primary' id='nouveauProposition"+i+"' onclick='nouveauProposition("+i+")' value='Add an answer' style='height:30px; width:160px; font-family:Arial;'/><select id='typequestion"+i+"'><option value='0'>One correct answer</option><option value='1'>Multiple correct answers</option><option selected='selected' style='display:none;' value='choose'>Choose the type of question "+i+"</option></select><br/><br/>");
+
+		    itotal = questions.length;
 
 		    var contenu = "";
 
-		    for(var cpt = 0;cpt<i;cpt++){
+		    for(var cpt = 0;cpt<itotal;cpt++){
 		   		contenu = contenu + questions[cpt];
 			}
 
@@ -371,30 +373,26 @@ mysql_query("SET NAMES UTF8");
 			//Les questions
 			var contenuquestion = new Array;
 
-			for(var cptbis = 1;cptbis<i;cptbis++){
+			for(var cptbis = 1;cptbis<itotal;cptbis++){
 		   		contenuquestion[cptbis] = $("#question"+cptbis).val();
 			}
 
 			//Les Propositions
 			contenuproposition = new Array;
 			var indextab = 0;
-			var compteur = 0;
 
-			for(var cptprop =1;cptprop<=i;cptprop++){
-				nbprop = questions[compteur].toString().split("Proposition").length-2;
-				for(var scpt =1;scpt<=nbprop;scpt++){
+			for(var cptprop = 1;cptprop<=itotal;cptprop++){
+				for(var scpt = 1;scpt<=questionsprop[cptprop];scpt++){
 					contenuproposition[indextab] = $("#question"+cptprop+"proposition"+scpt).val();
 					indextab++;
 				}
-				
-				compteur ++;
 			}
 
 			//Les types des questions
 
 			questiontype = new Array;
 
-			for(var cptbis = 0;cptbis<=itotal;cptbis++){
+			for(var cptbis = 0;cptbis<itotal;cptbis++){
 		   		questiontype[cptbis] = $("#typequestion"+cptbis).val();
 			}	
 
@@ -412,17 +410,15 @@ mysql_query("SET NAMES UTF8");
 		   //Remettre les valeurs des inputs
 
 		    //Les questions
-			for(var cptbis = 0;cptbis<=itotal;cptbis++){
+			for(var cptbis = 0;cptbis<itotal;cptbis++){
 	   			$("#question"+cptbis).val(contenuquestion[cptbis]);
 			}
 
 			//Les propositions
 			var indextab = 0;
-			var compteur = 0;
 
 			for(var cptprop =1;cptprop<=itotal;cptprop++){
-				nbprop = questions[compteur].toString().split("Proposition").length-2;
-				for(var scpt =1;scpt<=nbprop;scpt++){
+				for(var scpt =1;scpt<=questionsprop[cptprop];scpt++){
 					$("#question"+cptprop+"proposition"+scpt).val(contenuproposition[indextab]);
 					indextab++;
 				}
@@ -438,19 +434,168 @@ mysql_query("SET NAMES UTF8");
 		   		$("#media"+cptbisbrouk).val(allmedia[cptbisbrouk]);
 			}
 
-				compteur ++;
 		    ip = 0;
 		});
 	});
 
+	$(function(){
+		$("#removequestion").click(function(){
+			if(i > 0){
+				questions.pop();
+
+				contenu = "";
+	 			itotal = questions.length;
+	 			mediabool[itotal] = true;
+
+	 			i--;
+				for(var cpt = 0;cpt<itotal;cpt++){
+		   			contenu = contenu + questions[cpt];
+				}
+				//Sauvegarder les valeurs des inputs : 
+
+				//Les questions
+				var contenuquestion = new Array;
+
+				for(var cptbis = 1;cptbis<=itotal;cptbis++){
+			   		contenuquestion[cptbis] = $("#question"+cptbis).val();
+				}
+
+				//Les Propositions
+				contenuproposition = new Array;
+				var indextab = 0;
+
+				for(var cptprop = 1;cptprop<=itotal;cptprop++){
+					for(var scpt = 1;scpt<=questionsprop[cptprop];scpt++){
+						contenuproposition[indextab] = $("#question"+cptprop+"proposition"+scpt).val();
+						indextab++;
+					}
+				}
+
+				//Les types des questions
+
+				questiontype = new Array;
+
+				for(var cptbis = 0;cptbis<=itotal;cptbis++){
+			   		questiontype[cptbis] = $("#typequestion"+cptbis).val();
+				}	
+
+				//Les medias
+
+				allmedia = new Array;
+
+				for(var cptbisbrouk = 0;cptbisbrouk<=itotal;cptbisbrouk++){
+			   		allmedia[cptbisbrouk] = $("#media"+cptbisbrouk).val();
+				}			
+				document.getElementById('questions').innerHTML = contenu;
+
+				//Remettre les valeurs des inputs
+
+			    //Les questions
+				for(var cptbis = 0;cptbis<=itotal;cptbis++){
+		   			$("#question"+cptbis).val(contenuquestion[cptbis]);
+				}
+
+				//Les propositions
+				var indextab = 0;
+
+				for(var cptprop =1;cptprop<=itotal;cptprop++){
+					for(var scpt =1;scpt<=questionsprop[cptprop];scpt++){
+						$("#question"+cptprop+"proposition"+scpt).val(contenuproposition[indextab]);
+						indextab++;
+					}
+				}
+					
+				//Les types des questions
+				for(var cptbis = 0;cptbis<=itotal;cptbis++){
+			   		$("#typequestion"+cptbis).val(questiontype[cptbis]);
+				}
+
+				//les media
+				for(var cptbisbrouk = 0;cptbisbrouk<=itotal;cptbisbrouk++){
+			   		$("#media"+cptbisbrouk).val(allmedia[cptbisbrouk]);
+				}
+
+			}else{
+				alert("You can't remove the last question before adding one !");
+			}
+
+		});
+	});
+
+	$(function(){
+		$("#removemail").click(function(){
+			if(mails.length > 0){
+				mails.pop();
+				var contenumail = "";
+				var nbmail = mails.length;
+		   		 for(var cpt = 0;cpt<nbmail;cpt++){
+		   			contenumail = contenumail + mails[cpt];
+				}
+				contenumailfinal = "<font color='white'>Teacher  </font><input type='text' name='teachermail' id='teachermail' placeholder='Enter your mail address here' value=''size=25 maxlength=50/>  <input type='text' name='teachername' id='teachername' placeholder='Enter your name here' value=''size=20 maxlength=20/><br/></br>" + contenumail;
+				//Sauvegarder les valeurs des inputs : 
+				//Le mail de l'enseignant
+				var mailprof= $("#teachermail").val();
+
+				//Le nom de l'enseignant
+				var nameprof= $("#teachername").val();
+
+				//Les mails des élèves
+				var arraymail = new Array;
+
+				for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+					arraymail[cptbis] = $("#studentmail"+cptbis).val();
+				}
+
+				//Les noms des élèves
+				var arraymailname = new Array;
+
+				for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+					arraymailname[cptbis] = $("#studentname"+cptbis).val();
+				}
+
+			   document.getElementById('mails').innerHTML = contenumailfinal;
+
+				    //Remettre les valeurs des inputs : 
+
+				    //Le mail de l'enseignant
+					$("#teachermail").val(mailprof);
+
+					//Le nom de l'enseignant
+					$("#teachername").val(nameprof);
+
+					//Les mails des élèves
+					for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+					   	$("#studentmail"+cptbis).val(arraymail[cptbis]);
+					}
+
+					//Les noms des élèves
+					for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+					   	$("#studentname"+cptbis).val(arraymailname[cptbis]);
+					}
+					
+
+				}else{
+					alert("You can't remove the last mail before adding one !");
+				}
+
+			});
+		});
+
+
+	for(var cpt = 1;cpt<=1000;cpt++){
+			questionsprop[cpt-1] = 0;
+	}
+
 	function nouveauProposition (i){
 		ip++;
+		questionsprop[i]++;
 		var numproposition = questions[i-1].toString().split("Proposition").length-2;
 		questions[i-1] = questions[i-1] + "<font color='white'>Proposition   "+numproposition+"   </font><input type='text' name='proposition"+ip+"' id='question"+i+"proposition"+numproposition+"' value='' size=40 maxlength=50/><br/>";
 
  		contenu = "";
+ 		itotal = questions.length;
 
-		for(var cpt = 0;cpt<i;cpt++){
+		for(var cpt = 0;cpt<itotal;cpt++){
 	   		contenu = contenu + questions[cpt];
 		}
 
@@ -466,15 +611,19 @@ mysql_query("SET NAMES UTF8");
 		//Les Propositions
 		contenuproposition = new Array;
 		var indextab = 0;
-		var compteur = 0;
 
-		for(var cptprop =1;cptprop<=itotal;cptprop++){
-			nbprop = questions[compteur].toString().split("Proposition").length-2;
-			for(var scpt =1;scpt<=nbprop;scpt++){
+		for(var cptprop = 1;cptprop<=itotal;cptprop++){
+			if(i == cptprop){
+				for(var scpt = 1;scpt<=questionsprop[cptprop]-1;scpt++){
+					contenuproposition[indextab] = $("#question"+cptprop+"proposition"+scpt).val();
+					indextab++;
+				}
+			}else{
+				for(var scpt = 1;scpt<=questionsprop[cptprop];scpt++){
 				contenuproposition[indextab] = $("#question"+cptprop+"proposition"+scpt).val();
 				indextab++;
+				}
 			}
-			compteur ++;
 		}
 
 		//Les types des questions
@@ -502,13 +651,18 @@ mysql_query("SET NAMES UTF8");
 
 		//Les propositions
 		var indextab = 0;
-		var compteur = 0;
 
 		for(var cptprop =1;cptprop<=itotal;cptprop++){
-			nbprop = questions[compteur].toString().split("Proposition").length-2;
-			for(var scpt =1;scpt<=nbprop;scpt++){
-				$("#question"+cptprop+"proposition"+scpt).val(contenuproposition[indextab]);
-				indextab++;
+			if(i == cptprop){
+				for(var scpt =1;scpt<=questionsprop[cptprop]-1;scpt++){
+					$("#question"+cptprop+"proposition"+scpt).val(contenuproposition[indextab]);
+					indextab++;
+				}
+			}else{
+				for(var scpt =1;scpt<=questionsprop[cptprop];scpt++){
+					$("#question"+cptprop+"proposition"+scpt).val(contenuproposition[indextab]);
+					indextab++;
+				}
 			}
 		}
 					
@@ -521,7 +675,6 @@ mysql_query("SET NAMES UTF8");
 		for(var cptbisbrouk = 0;cptbisbrouk<=itotal;cptbisbrouk++){
 	  		$("#media"+cptbisbrouk).val(allmedia[cptbisbrouk]);
 		}
-		compteur ++;
 
 		var nbmail = 0;
 
@@ -532,146 +685,137 @@ mysql_query("SET NAMES UTF8");
 			mediabool[cpt-1] = true;
 	}
 
-		function nouveaumedia (i){
-			if(mediabool[i-1]==true){
-		   		 questions[i-1] =  "<br><br><h4><font color=white>Question "+i+" media link : </font><input type='text' name='media"+i+"'' id='media"+i+"' placeholder='Paste link of your media here.' value=''size=30 /></h4>" + questions[i-1];
-		   	}
-		   	mediabool[i-1] = false;
+	function nouveaumedia (i){
+		if(mediabool[i-1]==true){
+	  		 questions[i-1] =  "<br><br><h4><font color=white>Question "+i+" media link : </font><input type='text' name='media"+i+"'' id='media"+i+"' placeholder='Paste link of your media here.' value=''size=30 /></h4>" + questions[i-1];
+	   	}
+	   	mediabool[i-1] = false;
 
-		   	contenu = "";
+	   	contenu = "";
+	   	itotal = questions.length;
+		for(var cpt = 0;cpt<itotal;cpt++){
+ 			contenu = contenu + questions[cpt];
+		}
+		//Sauvegarder les valeurs des inputs : 
 
-			for(var cpt = 0;cpt<i;cpt++){
-	   			contenu = contenu + questions[cpt];
+		//Les questions
+		var contenuquestion = new Array;
+
+		for(var cptbis = 1;cptbis<=itotal;cptbis++){
+	  		contenuquestion[cptbis] = $("#question"+cptbis).val();
+		}
+
+		//Les Propositions
+		contenuproposition = new Array;
+		var indextab = 0;
+
+		for(var cptprop = 1;cptprop<=itotal;cptprop++){
+			for(var scpt = 1;scpt<=questionsprop[cptprop];scpt++){
+				contenuproposition[indextab] = $("#question"+cptprop+"proposition"+scpt).val();
+				indextab++;
 			}
-			//Sauvegarder les valeurs des inputs : 
+		}
 
-			//Les questions
-			var contenuquestion = new Array;
+		//Les types des questions
 
-			for(var cptbis = 1;cptbis<=itotal;cptbis++){
-		   		contenuquestion[cptbis] = $("#question"+cptbis).val();
-			}
+		questiontype = new Array;
 
-			//Les Propositions
-			contenuproposition = new Array;
+		for(var cptbis = 0;cptbis<=itotal;cptbis++){
+	  		questiontype[cptbis] = $("#typequestion"+cptbis).val();
+		}
+
+		//les medias
+		allmedia = new Array;
+
+		for(var cptbisbrouk = 0;cptbisbrouk<=itotal;cptbisbrouk++){
+	   		allmedia[cptbisbrouk] = $("#media"+cptbisbrouk).val();
+		}		
+
+		document.getElementById('questions').innerHTML = contenu;
+
+		//Remettre les valeurs des inputs
+
+	    //Les questions
+		for(var cptbis = 0;cptbis<=itotal;cptbis++){
+  			$("#question"+cptbis).val(contenuquestion[cptbis]);
+		}
+
+		//Les propositions
 			var indextab = 0;
-			var compteur = 0;
 
 			for(var cptprop =1;cptprop<=itotal;cptprop++){
-				nbprop = questions[compteur].toString().split("Proposition").length-2;
-				for(var scpt =1;scpt<=nbprop;scpt++){
-					contenuproposition[indextab] = $("#question"+cptprop+"proposition"+scpt).val();
-					indextab++;
-				}
-				compteur ++;
-			}
-
-			//Les types des questions
-
-			questiontype = new Array;
-
-			for(var cptbis = 0;cptbis<=itotal;cptbis++){
-		   		questiontype[cptbis] = $("#typequestion"+cptbis).val();
-			}
-
-			//les medias
-			allmedia = new Array;
-
-			for(var cptbisbrouk = 0;cptbisbrouk<=itotal;cptbisbrouk++){
-		   		allmedia[cptbisbrouk] = $("#media"+cptbisbrouk).val();
-			}		
-
-			document.getElementById('questions').innerHTML = contenu;
-
-			//Remettre les valeurs des inputs
-
-		    //Les questions
-			for(var cptbis = 0;cptbis<=itotal;cptbis++){
-	   			$("#question"+cptbis).val(contenuquestion[cptbis]);
-			}
-
-			//Les propositions
-			var indextab = 0;
-			var compteur = 0;
-
-			for(var cptprop =1;cptprop<=itotal;cptprop++){
-				nbprop = questions[compteur].toString().split("Proposition").length-2;
-				for(var scpt =1;scpt<=nbprop;scpt++){
+				for(var scpt =1;scpt<=questionsprop[cptprop];scpt++){
 					$("#question"+cptprop+"proposition"+scpt).val(contenuproposition[indextab]);
 					indextab++;
 				}
 			}
 				
-				//Les types des questions
-				for(var cptbis = 1;cptbis<=itotal;cptbis++){
-			   		$("#typequestion"+cptbis).val(questiontype[cptbis]);
-				}
+		//Les types des questions
+		for(var cptbis = 1;cptbis<=itotal;cptbis++){
+	   		$("#typequestion"+cptbis).val(questiontype[cptbis]);
+		}
 
-				//les medias
+		//les medias
+		for(var cptbisbrouk = 0;cptbisbrouk<=itotal;cptbisbrouk++){
+			$("#media"+cptbisbrouk).val(allmedia[cptbisbrouk]);
+		}
+	}
 
-				for(var cptbisbrouk = 0;cptbisbrouk<=itotal;cptbisbrouk++){
-		   			$("#media"+cptbisbrouk).val(allmedia[cptbisbrouk]);
-				}
+	$(function(){
+		$("#nouveauMail").click(function(){   
+			var nbmail = mails.length+1;
+			mails.push("<font color='white'>Student " + nbmail + "  </font><input type='text' name='studentmail"+nbmail+"' id='studentmail"+nbmail+"' placeholder='Enter a student mail here' value='' size=25 maxlength=50/>  <input type='text' name='studentname"+nbmail+"' id='studentname"+nbmail+"' placeholder='Enter the student name here' value='' size=20 maxlength=50/><br/>");
 
-				compteur ++;
+			var contenumail = "";
+			var nbmail = mails.length;
+		    for(var cpt = 0;cpt<nbmail;cpt++){
+		   		contenumail = contenumail + mails[cpt];
 			}
 
-		$(function(){
-			$("#nouveauMail").click(function(){   
-				nbmail ++;
+			contenumailfinal = "<font color='white'>Teacher  </font><input type='text' name='teachermail' id='teachermail' placeholder='Enter your mail address here' value=''size=25 maxlength=50/>  <input type='text' name='teachername' id='teachername' placeholder='Enter your name here' value=''size=20 maxlength=20/><br/></br>" + contenumail;
+			//Sauvegarder les valeurs des inputs : 
 
-				mails.push("<font color='white'>Student " + nbmail + "  </font><input type='text' name='studentmail"+nbmail+"' id='studentmail"+nbmail+"' placeholder='Enter a student mail here' value='' size=25 maxlength=50/>  <input type='text' name='studentname"+nbmail+"' id='studentname"+nbmail+"' placeholder='Enter the student name here' value='' size=20 maxlength=50/><br/>");
+			//Le mail de l'enseignant
+			var mailprof= $("#teachermail").val();
 
-				var contenumail = "";
+			//Le nom de l'enseignant
+			var nameprof= $("#teachername").val();
 
-			    for(var cpt = 0;cpt<nbmail;cpt++){
-			   		contenumail = contenumail + mails[cpt];
-				}
+			//Les mails des élèves
+			var arraymail = new Array;
 
-				contenumailfinal = "<font color='white'>Teacher  </font><input type='text' name='teachermail' id='teachermail' placeholder='Enter your mail address here' value=''size=25 maxlength=50/>  <input type='text' name='teachername' id='teachername' placeholder='Enter your name here' value=''size=20 maxlength=20/><br/></br>" + contenumail;
-				//Sauvegarder les valeurs des inputs : 
+			for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+				arraymail[cptbis] = $("#studentmail"+cptbis).val();
+			}
 
-				//Le mail de l'enseignant
-				var mailprof= $("#teachermail").val();
+			//Les noms des élèves
+			var arraymailname = new Array;
 
-				//Le nom de l'enseignant
-				var nameprof= $("#teachername").val();
+			for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+				arraymailname[cptbis] = $("#studentname"+cptbis).val();
+			}
 
-				//Les mails des élèves
-				var arraymail = new Array;
+		   document.getElementById('mails').innerHTML = contenumailfinal;
 
-				for(var cptbis = 1;cptbis<=nbmail;cptbis++){
-					arraymail[cptbis] = $("#studentmail"+cptbis).val();
-				}
+		    //Remettre les valeurs des inputs : 
 
-				//Les noms des élèves
-				var arraymailname = new Array;
+		    //Le mail de l'enseignant
+			$("#teachermail").val(mailprof);
 
-				for(var cptbis = 1;cptbis<=nbmail;cptbis++){
-					arraymailname[cptbis] = $("#studentname"+cptbis).val();
-				}
+			//Le nom de l'enseignant
+			$("#teachername").val(nameprof);
 
-			    document.getElementById('mails').innerHTML = contenumailfinal;
+			//Les mails des élèves
+			for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+			   	$("#studentmail"+cptbis).val(arraymail[cptbis]);
+			}
 
-			    //Remettre les valeurs des inputs : 
-
-			    //Le mail de l'enseignant
-				$("#teachermail").val(mailprof);
-
-				//Le nom de l'enseignant
-				$("#teachername").val(nameprof);
-
-				//Les mails des élèves
-				for(var cptbis = 1;cptbis<=nbmail;cptbis++){
-				   	$("#studentmail"+cptbis).val(arraymail[cptbis]);
-				}
-
-				//Les noms des élèves
-				for(var cptbis = 1;cptbis<=nbmail;cptbis++){
-				   	$("#studentname"+cptbis).val(arraymailname[cptbis]);
-				}
-			});
-		});  
+			//Les noms des élèves
+			for(var cptbis = 1;cptbis<=nbmail;cptbis++){
+			   	$("#studentname"+cptbis).val(arraymailname[cptbis]);
+			}
+		});
+	});  
 
 	</script>
 <BODY>
@@ -682,10 +826,12 @@ mysql_query("SET NAMES UTF8");
 		<div id='questions'></div><br/><br/>
 	 </div>
 
-		 <div id='boutons'><button type='button' class="btn btn-info" id='nouveauInput' style='height:30px; width:160px'/>Add a question <span class="glyphicon glyphicon-plus"></span></button><br/> <br/>
+		 <div id='boutons'><button type='button' class="btn btn-info" id='nouveauInput' style='height:30px; width:160px'/>Add a question &nbsp;<span class="glyphicon glyphicon-plus"></span></button>
+		 	<button type='button' class="btn btn-danger" id='removequestion' style='height:30px; width:170px'/>Remove last question  <span class="glyphicon glyphicon-minus"></span></button><br/> <br/>
 		 <div id="create">
 		 	 <h1> <font color="white">Mails : </font></h1><br/>
-		 	 <div id='boutons'><button type='button' class="btn btn-primary" id='nouveauMail' style='height:30px; width:160px'/>Add a student mail <span class="glyphicon glyphicon-envelope"></span></button></div><br/>
+		 	 <div id='boutons'><button type='button' class="btn btn-primary" id='nouveauMail' style='height:30px; width:160px'/>Add a student mail <span class="glyphicon glyphicon-envelope"></span></button>
+		 	 	<button type='button' class="btn btn-danger" id='removemail' style='height:30px; width:150px'/>Remove last mail  <span class="glyphicon glyphicon-minus"></span></button></div><br/>
 			 <div id='mails'><font color='white'>Teacher  </font> <input type='text' name='teachermail' id='teachermail' placeholder='Enter your mail address here' value='' size=25/> <input type='text' name='teachername' id='teachername' placeholder='Enter your name here' value='' size=20/><br/></div><br/><br/>
 	    </div>
 
