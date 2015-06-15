@@ -44,7 +44,7 @@
 				list($question)=mysql_fetch_row($req); 
 				$req = mysql_query("SELECT Answer FROM Form WHERE Token LIKE '%".$token."%'") or exit(mysql_error());
 				list($answer)=mysql_fetch_row($req); 
-				$req = mysql_query("SELECT GAnswer FROM Form WHERE Token LIKE '%".$token."%'") or exit(mysql_error());
+				$req = mysql_query("SELECT Media FROM Form WHERE Token LIKE '%".$token."%'") or exit(mysql_error());
 				list($videoimage)=mysql_fetch_row($req); 
 				$tabquest = explode(" | ", $question);
 				$tabansw = explode(" | ", $answer);
